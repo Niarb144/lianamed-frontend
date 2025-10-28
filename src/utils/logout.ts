@@ -11,5 +11,5 @@ export const logout = (navigate: (path: string) => void) => {
   setAuthToken(null);
 
   // 3. Redirect to login
-  navigate('/');
+  navigate('/login');
 };

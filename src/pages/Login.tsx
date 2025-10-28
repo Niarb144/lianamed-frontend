@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { api, setAuthToken } from '../api/api';
 import { useNavigate } from 'react-router-dom';
+import Navigation from '../components/Navigation';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -42,9 +43,9 @@ export default function Login() {
   };
 
   return (
-    <div className="container">
+    <div className="container login">
       <h2>Login</h2>
-      <form onSubmit={submit} style={{ maxWidth: 400 }}>
+      <form onSubmit={submit} style={{ maxWidth: 400 }} className='login-form'>
         <div style={{ marginBottom: 8 }}>
           <input
             placeholder="Email"

@@ -1,5 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import HomePage from './pages/HomePage'
 import Products from './pages/Products'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -11,7 +12,8 @@ export default function App(){
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Login/>} />
+        <Route path='/' element={<HomePage/>} />
+        <Route path='/login' element={<Login/>} />
         <Route path='/products' element={<Products/>} />
         <Route path='/register' element={<Register/>} />
         <Route path='/dashboard' element={<Dashboard/>} />
@@ -19,6 +21,7 @@ export default function App(){
         <Route path="/pharmacist-dashboard" element={<PharmacistDashboard />} />
 
       </Routes>
+
     </BrowserRouter>
   )
 }
