@@ -117,9 +117,13 @@ export default function Example() {
             Contacts
           </a>
         </PopoverGroup>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-4">
           <a href="/login" className="text-sm/6 font-semibold text-gray-900">
             Log in <span aria-hidden="true">&rarr;</span>
+          </a>
+
+          <a href="/register"className='text-sm/6 font-semibold text-gray-900'>
+            Register <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
       </nav>
