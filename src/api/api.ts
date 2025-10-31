@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const API_BASE = 'http://192.168.0.152:5000/api';
-const API_BASE = 'https://lianamed-backend.onrender.com/api';
+const API_BASE = 'http://192.168.0.152:5000/api';
+// const API_BASE = 'https://lianamed-backend.onrender.com/api';
 
 
 export const api = axios.create({

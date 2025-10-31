@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { api, setAuthToken } from '../api/api';
 import { useNavigate } from 'react-router-dom';
 import { motion } from "framer-motion";
+import { EyeIcon, EyeOffIcon } from "lucide-react"; 
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const submit = async (e: React.FormEvent) => {
@@ -88,13 +90,23 @@ export default function Login() {
             className="w-full px-4 py-3 rounded-md bg-white/20 text-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
           />
 
-          <input
-            placeholder="Password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-3 rounded-md bg-white/20 text-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
-          />
+          <div>
+            <input
+              placeholder="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-3 rounded-md bg-white/20 text-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-3 text-gray-300 hover:text-white transition"
+            >
+              {showPassword ? <EyeOffIcon size={20} /> : <EyeIcon size={20} />}
+            </button>
+          </div>
+          
 
           <motion.button
             whileHover={{ scale: 1.05, boxShadow: "0 0 15px rgba(59,130,246,0.6)", cursor: "pointer" }}

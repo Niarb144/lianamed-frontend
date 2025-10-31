@@ -7,6 +7,8 @@ import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import AdminDashboard from './pages/AdminDashboard'
 import PharmacistDashboard from './pages/PharmacistDashboard'
+import AddMedicine from './pages/AddMedicine'
+import MedicineList from './pages/MedicineList'
 
 export default function App(){
   return (
@@ -19,6 +21,8 @@ export default function App(){
         <Route path='/dashboard' element={<Dashboard/>} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/pharmacist-dashboard" element={<PharmacistDashboard />} />
+        <Route path="/add-medicine" element={<AddMedicine />} />
+        <Route path="/medicine-list" element={<MedicineList />} />
 
       </Routes>
 
