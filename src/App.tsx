@@ -9,6 +9,7 @@ import AdminDashboard from './pages/AdminDashboard'
 import PharmacistDashboard from './pages/PharmacistDashboard'
 import AddMedicine from './pages/AddMedicine'
 import MedicineList from './pages/MedicineList'
+import Cart from './pages/Cart'
 
 export default function App(){
   return (
@@ -23,6 +24,7 @@ export default function App(){
         <Route path="/pharmacist-dashboard" element={<PharmacistDashboard />} />
         <Route path="/add-medicine" element={<AddMedicine />} />
         <Route path="/medicine-list" element={<MedicineList />} />
+        <Route path="/cart" element={<Cart />} />
 
       </Routes>
 

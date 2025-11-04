@@ -3,6 +3,8 @@ import { api } from "../api/api";
 import ProductModal from "../components/ProductModal";
 import CartIcon from "../components/CartIcon";
 import { useCart } from "../context/CartContext";
+import { logout } from "../utils/logout";
+import { useNavigate } from "react-router-dom";
 
 interface Medicine {
   _id: string;
@@ -19,6 +21,7 @@ export default function Products() {
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState<Medicine | null>(null);
   const { addToCart } = useCart();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,6 +64,14 @@ export default function Products() {
             }}
           />
           <CartIcon />
+
+          <button
+            className="btn btn-logout"
+            onClick={() => logout(navigate)}
+            style={{ background: "#dc3545", color: "#fff" }}
+          >
+            Logout
+          </button>
         </div>
       </header>
 
@@ -97,7 +108,7 @@ export default function Products() {
                 <img
                   src={
                     m.image
-                      ? `${import.meta.env.VITE_API_BASE}${m.image}`
+                      ? `${"http:localhost:5000/api"}${m.image}`
                       : "https://via.placeholder.com/200x150?text=No+Image"
                   }
                   alt={m.name}
@@ -147,7 +158,20 @@ export default function Products() {
           ))}
         </div>
       )}
-      <ProductModal product={selected} onClose={() => setSelected(null)} />
+      <ProductModal
+        product={
+          selected
+            ? {
+                _id: selected._id,
+                name: selected.name,
+                price: selected.price,
+                image: selected.image,
+                quantity: 1,
+              }
+            : null
+        }
+        onClose={() => setSelected(null)}
+      />
     </div>
   );
 }

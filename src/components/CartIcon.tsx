@@ -1,12 +1,17 @@
 import React from "react";
 import { useCart } from "../context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 export default function CartIcon() {
   const { cart } = useCart();
+  const navigate = useNavigate();
   const count = cart.reduce((sum, i) => sum + i.quantity, 0);
 
   return (
-    <div style={{ position: "relative", cursor: "pointer" }}>
+    <div
+      style={{ position: "relative", cursor: "pointer" }}
+      onClick={() => navigate("/cart")}
+    >
       <span style={{ fontSize: "24px" }}>🛒</span>
       {count > 0 && (
         <span
