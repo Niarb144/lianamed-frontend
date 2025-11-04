@@ -11,30 +11,38 @@ export default function AddMedicine() {
     stock: "",
   });
 
+  const [image, setImage] = useState<File | null>(null);
+
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
-    if (!token) return alert("Not logged in");
-    setAuthToken(token);
 
     try {
-      await api.post("/medicines/add", {
-        name: form.name,
-        category: form.category,
-        description: form.description,
-        price: Number(form.price),
-        stock: Number(form.stock),
+      const formData = new FormData();
+      Object.entries(form).forEach(([key, value]) => {
+        formData.append(key, value);
       });
+      if (image) formData.append("image", image);
+
+      await api.post("/medicines/add", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
       alert("✅ Medicine added successfully!");
       navigate("/admin-dashboard");
     } catch (err: any) {
-      console.error(err.response?.data || err);
+      console.error("Add medicine error:", err);
       alert(err.response?.data?.message || "Failed to add medicine");
     }
   };
@@ -82,6 +90,18 @@ export default function AddMedicine() {
           onChange={handleChange}
           className="input"
         />
+        <label>Image</label>
+        <input type="file" accept="image/*" onChange={handleImageChange} />
+
+        {image && (
+          <div style={{ marginTop: "10px" }}>
+            <img
+              src={URL.createObjectURL(image)}
+              alt="preview"
+              style={{ width: "120px", borderRadius: "6px" }}
+            />
+          </div>
+        )}
         <button type="submit" className="btn">Add Medicine</button>
       </form>
     </div>

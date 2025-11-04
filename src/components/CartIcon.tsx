@@ -1,0 +1,29 @@
+import React from "react";
+import { useCart } from "../context/CartContext";
+
+export default function CartIcon() {
+  const { cart } = useCart();
+  const count = cart.reduce((sum, i) => sum + i.quantity, 0);
+
+  return (
+    <div style={{ position: "relative", cursor: "pointer" }}>
+      <span style={{ fontSize: "24px" }}>🛒</span>
+      {count > 0 && (
+        <span
+          style={{
+            position: "absolute",
+            top: "-6px",
+            right: "-8px",
+            background: "red",
+            color: "white",
+            fontSize: "12px",
+            borderRadius: "50%",
+            padding: "2px 6px",
+          }}
+        >
+          {count}
+        </span>
+      )}
+    </div>
+  );
+}

@@ -16,12 +16,15 @@ interface Medicine {
   category: string;
   description: string;
   price: number;
+  image: string;
   stock: number;
 }
 
 export default function AdminDashboard() {
   const [users, setUsers] = useState<User[]>([]);
   const [medicines, setMedicines] = useState<Medicine[]>([]);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editForm, setEditForm] = useState<Partial<Medicine>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showUserModal, setShowUserModal] = useState(false);
@@ -98,6 +101,49 @@ export default function AdminDashboard() {
       loadData();
     } catch (err: any) {
       alert(err.response?.data?.message || "Failed to update user");
+    }
+  };
+
+  // 🧾 Edit medicine handlers
+  const handleEdit = (m: Medicine) => {
+    setEditingId(m._id);
+    setEditForm({
+      name: m.name,
+      category: m.category,
+      description: m.description,
+      price: m.price,
+      stock: m.stock,
+    });
+  };
+
+  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditForm({ ...editForm, [e.target.name]: e.target.value });
+  };
+
+  const saveEdit = async (id: string) => {
+    try {
+      await api.put(`/medicines/${id}`, {
+        ...editForm,
+        price: Number(editForm.price),
+        stock: Number(editForm.stock),
+      });
+      alert("✅ Medicine updated successfully!");
+      setEditingId(null);
+      loadData();
+    } catch (err: any) {
+      alert(err.response?.data?.message || "Failed to update medicine");
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!window.confirm("Are you sure you want to delete this medicine?")) return;
+
+    try {
+      await api.delete(`/medicines/${id}`);
+      alert("❌ Medicine deleted successfully!");
+      loadData();
+    } catch (err: any) {
+      alert(err.response?.data?.message || "Failed to delete medicine");
     }
   };
 
@@ -198,7 +244,7 @@ export default function AdminDashboard() {
         )}
       </section>
 
-      {/* 💊 MEDICINES SECTION (unchanged) */}
+      {/* 💊 MEDICINES TABLE */}
       <section style={{ marginTop: "40px" }}>
         <h3>💊 Medicines</h3>
         {medicines.length === 0 ? (
@@ -211,17 +257,66 @@ export default function AdminDashboard() {
                 <th style={{ padding: "10px" }}>Category</th>
                 <th style={{ padding: "10px" }}>Description</th>
                 <th style={{ padding: "10px" }}>Price (KES)</th>
+                <th style={{ padding: "10px" }}>Image</th>
                 <th style={{ padding: "10px" }}>Stock</th>
+                <th style={{ padding: "10px" }}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {medicines.map((m) => (
                 <tr key={m._id} style={{ borderBottom: "1px solid #eee" }}>
-                  <td style={{ padding: "10px" }}>{m.name}</td>
-                  <td style={{ padding: "10px" }}>{m.category || "-"}</td>
-                  <td style={{ padding: "10px" }}>{m.description || "-"}</td>
-                  <td style={{ padding: "10px" }}>{m.price}</td>
-                  <td style={{ padding: "10px" }}>{m.stock}</td>
+                  {editingId === m._id ? (
+                    <>
+                      <td><input name="name" value={editForm.name || ""} onChange={handleEditChange} /></td>
+                      <td><input name="category" value={editForm.category || ""} onChange={handleEditChange} /></td>
+                      <td><input name="description" value={editForm.description || ""} onChange={handleEditChange} /></td>
+                      <td><input name="price" type="number" value={editForm.price || ""} onChange={handleEditChange} /></td>
+                      <td><input type="file" accept="image/*" value={editForm.image || "No Image"} onChange={handleEditChange} /></td>
+                      <td><input name="stock" type="number" value={editForm.stock || ""} onChange={handleEditChange} /></td>
+                      <td>
+                        <button onClick={() => saveEdit(m._id)} className="btn" style={{ background: "#28a745", color: "white" }}>
+                          💾 Save
+                        </button>
+                        <button onClick={() => setEditingId(null)} className="btn" style={{ background: "#6c757d", color: "white", marginLeft: "5px" }}>
+                          ✖ Cancel
+                        </button>
+                      </td>
+                    </>
+                  ) : (
+                    <>
+                      <td style={{ padding: "10px" }}>{m.name}</td>
+                      <td style={{ padding: "10px" }}>{m.category || "-"}</td>
+                      <td style={{ padding: "10px" }}>{m.description || "-"}</td>
+                      <td style={{ padding: "10px" }}>{m.price}</td>
+                      <td style={{ padding: "10px" }}>
+                        {m.image ? (
+                          <img
+                            src={`${(import.meta as any).env.VITE_API_BASE}${m.image}`}
+                            alt={m.name}
+                            style={{
+                              width: "60px",
+                              height: "60px",
+                              objectFit: "cover",
+                              borderRadius: "6px",
+                            }}
+                          />
+                        ) : (
+                          "No Image"
+                        )}
+                      </td>
+                      <td style={{ padding: "10px" }}>{m.stock}</td>
+
+                      <td style={{ padding: "10px" }}>{m.stock}</td>
+                      <td style={{ padding: "10px" }}>
+                        <button onClick={() => handleEdit(m)} className="btn" style={{ background: "#ffc107", color: "#000" }}>
+                          ✏ Edit
+                        </button>
+                        <button onClick={() => handleDelete(m._id)} className="btn" style={{ background: "#dc3545", color: "white", marginLeft: "5px" }}>
+                          🗑 Delete
+                        </button>
+                      </td>
+                    </>
+                  )}
                 </tr>
               ))}
             </tbody>
