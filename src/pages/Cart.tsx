@@ -1,6 +1,8 @@
 import React from "react";
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
+import { api } from "../api/api"; // Make sure this is imported at the top
+
 
 export default function Cart() {
   const { cart, removeFromCart, clearCart, increaseQuantity, decreaseQuantity } = useCart();
@@ -10,6 +12,35 @@ export default function Cart() {
     (sum, item) => sum + item.price * item.quantity,
     0
   );
+
+  const handleCheckout = async () => {
+  try {
+    const userId = localStorage.getItem("userId"); // assuming you store userId when logging in
+    if (!userId) {
+      alert("You must be logged in to place an order.");
+      navigate("/login");
+      return;
+    }
+
+    const orderData = {
+      userId,
+      items: cart.map((item) => ({
+        _id: item._id,
+        quantity: item.quantity,
+      })),
+    };
+
+    const res = await api.post("/billing/checkout", orderData);
+    alert("✅ Order placed successfully!");
+    console.log(res.data);
+    clearCart();
+    navigate("/products");
+  } catch (err: any) {
+    console.error("❌ Checkout error:", err.response?.data || err);
+    alert(err.response?.data?.message || "Failed to checkout.");
+  }
+};
+
 
   return (
     <div
@@ -192,7 +223,7 @@ export default function Cart() {
             <div>
               <h3>Total: KES {total}</h3>
               <button
-                onClick={() => alert("Proceeding to checkout...")}
+                onClick={handleCheckout}
                 style={{
                   background: "#28a745",
                   color: "white",

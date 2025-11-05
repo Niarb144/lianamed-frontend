@@ -109,7 +109,7 @@ export default function Products() {
                   src={
                     m.image
                       ? `${"http:localhost:5000/api"}${m.image}`
-                      : "https://via.placeholder.com/200x150?text=No+Image"
+                      : "https://placehold.co/800?text=Hello+World&font=roboto"
                   }
                   alt={m.name}
                   style={{
@@ -120,7 +120,6 @@ export default function Products() {
                 />
               </div>
               <h3>{m.name}</h3>
-              <p>{m.description || "No description"}</p>
               <p>
                 <strong>KES {m.price}</strong>
               </p>
