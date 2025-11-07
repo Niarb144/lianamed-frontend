@@ -29,6 +29,7 @@ export default function Products() {
       try {
         const res = await api.get("/medicines");
         setMedicines(res.data);
+        console.log("Fetched medicines:", res.data);
       } catch (err) {
         console.error("Error fetching medicines:", err);
       }
@@ -89,6 +90,7 @@ export default function Products() {
           }}
         >
           {filtered.map((m) => (
+            console.log(m.image),
             <div
               key={m._id}
               style={{
@@ -111,7 +113,7 @@ export default function Products() {
                 <img
                   src={
                     m.image
-                      ? `${"http:localhost:5000/api"}${m.image}`
+                      ? `${"http://localhost:5000"}${m.image}`
                       : "https://placehold.co/800?text=Hello+World&font=roboto"
                   }
                   alt={m.name}
