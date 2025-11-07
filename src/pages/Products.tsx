@@ -22,6 +22,7 @@ export default function Products() {
   const [selected, setSelected] = useState<Medicine | null>(null);
   const { addToCart } = useCart();
   const navigate = useNavigate();
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,6 +65,8 @@ export default function Products() {
             }}
           />
           <CartIcon />
+
+          <h3>Welcome, {localStorage.getItem("userName")}</h3>
 
           <button
             className="btn btn-logout"

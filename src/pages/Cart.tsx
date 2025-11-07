@@ -1,7 +1,7 @@
 import React from "react";
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
-import { api } from "../api/api"; // Make sure this is imported at the top
+import { api } from "../api/api"; 
 
 
 export default function Cart() {
@@ -15,7 +15,7 @@ export default function Cart() {
 
   const handleCheckout = async () => {
   try {
-    const userId = localStorage.getItem("userId"); // assuming you store userId when logging in
+    const userId = localStorage.getItem("userId"); 
     if (!userId) {
       alert("You must be logged in to place an order.");
       navigate("/login");
@@ -29,6 +29,8 @@ export default function Cart() {
         quantity: item.quantity,
       })),
     };
+
+    console.log("🧾 Checkout payload:", orderData);
 
     const res = await api.post("/billing/checkout", orderData);
     alert("✅ Order placed successfully!");

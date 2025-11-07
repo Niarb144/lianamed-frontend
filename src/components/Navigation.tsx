@@ -38,6 +38,7 @@ const callsToAction = [
 
 export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
 
   return (
     <header className="bg-white">

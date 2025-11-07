@@ -6,6 +6,8 @@ export const logout = (navigate: (path: string) => void) => {
   localStorage.removeItem('token');
   localStorage.removeItem('role');
   localStorage.removeItem('name');
+  localStorage.removeItem("userId");
+  window.dispatchEvent(new Event("userChange"));
 
   // 2. Remove auth header
   setAuthToken(null);

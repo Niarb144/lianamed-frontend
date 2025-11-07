@@ -18,9 +18,14 @@ export default function Login() {
       const res = await api.post('/auth/login', { email, password });
       const { token, user } = res.data;
 
+      console.log('Login successful:', res.data);
       // Save authentication info
       localStorage.setItem('token', token);
       localStorage.setItem('role', user.role);
+      localStorage.setItem("userId", res.data.user.id || res.data.user._id);
+      localStorage.setItem("userName",res.data.user.name );
+      window.dispatchEvent(new Event("userChange"));
+
       setAuthToken(token);
 
       // Redirect based on user role
@@ -28,7 +33,7 @@ export default function Login() {
         case 'admin':
           navigate('/admin-dashboard');
           break;
-        case 'doctor':
+        case 'pharmacist':
           navigate('/doctor-dashboard');
           break;
         case 'nurse':
