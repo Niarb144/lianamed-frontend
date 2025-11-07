@@ -55,7 +55,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
         <img
           src={
             product.image
-              ? `${"http://localhost:5000/api"}${product.image}`
+              ? `${"http://localhost:5000"}${product.image}`
               : "https://via.placeholder.com/250x180?text=No+Image"
           }
           alt={product.name}

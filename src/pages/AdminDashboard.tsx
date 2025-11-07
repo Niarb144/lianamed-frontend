@@ -23,13 +23,19 @@ interface Medicine {
 export default function AdminDashboard() {
   const [users, setUsers] = useState<User[]>([]);
   const [medicines, setMedicines] = useState<Medicine[]>([]);
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [editForm, setEditForm] = useState<Partial<Medicine>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
   const [showUserModal, setShowUserModal] = useState(false);
+  const [showMedicineModal, setShowMedicineModal] = useState(false);
+
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [editUserData, setEditUserData] = useState<Partial<User>>({});
+  const [editUserData, setEditUserData] = useState<Partial<User & { password?: string }>>({});
+
+  const [selectedMedicine, setSelectedMedicine] = useState<Medicine | null>(null);
+  const [editMedicineData, setEditMedicineData] = useState<Partial<Medicine>>({});
+  const [editMedicineImage, setEditMedicineImage] = useState<File | null>(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,7 +59,6 @@ export default function AdminDashboard() {
         api.get("/medicines"),
       ]);
 
-      // Ensure data is arrays
       setUsers(Array.isArray(userRes.data.users) ? userRes.data.users : []);
       setMedicines(Array.isArray(medRes.data) ? medRes.data : []);
       setError(null);
@@ -68,7 +73,6 @@ export default function AdminDashboard() {
   // 🧾 Delete a user
   const handleDeleteUser = async (id: string) => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
-
     try {
       await api.delete(`/admin/users/${id}`);
       alert("❌ User deleted successfully!");
@@ -78,19 +82,27 @@ export default function AdminDashboard() {
     }
   };
 
-  // 🪟 Open edit modal
+  // 🪟 Open modals
   const openUserModal = (user: User) => {
     setSelectedUser(user);
     setEditUserData({ ...user });
     setShowUserModal(true);
   };
+  const openMedicineModal = (medicine: Medicine) => {
+    setSelectedMedicine(medicine);
+    setEditMedicineData({ ...medicine });
+    setShowMedicineModal(true);
+  };
 
-  // 🧾 Handle change in modal form
+  // 🧾 Handle input changes
   const handleUserChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setEditUserData({ ...editUserData, [e.target.name]: e.target.value });
   };
+  const handleMedicineChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditMedicineData({ ...editMedicineData, [e.target.name]: e.target.value });
+  };
 
-  // 💾 Save updated user data
+  // 💾 Save user (including password)
   const saveUserChanges = async () => {
     if (!selectedUser) return;
 
@@ -104,40 +116,32 @@ export default function AdminDashboard() {
     }
   };
 
-  // 🧾 Edit medicine handlers
-  const handleEdit = (m: Medicine) => {
-    setEditingId(m._id);
-    setEditForm({
-      name: m.name,
-      category: m.category,
-      description: m.description,
-      price: m.price,
-      stock: m.stock,
-    });
-  };
+  // 💾 Save medicine (with image upload)
+  const saveMedicineChanges = async () => {
+    if (!selectedMedicine) return;
 
-  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditForm({ ...editForm, [e.target.name]: e.target.value });
-  };
-
-  const saveEdit = async (id: string) => {
     try {
-      await api.put(`/medicines/${id}`, {
-        ...editForm,
-        price: Number(editForm.price),
-        stock: Number(editForm.stock),
+      const formData = new FormData();
+      Object.entries(editMedicineData).forEach(([key, value]) => {
+        formData.append(key, value as string);
       });
+      if (editMedicineImage) formData.append("image", editMedicineImage);
+
+      await api.put(`/medicines/${selectedMedicine._id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
       alert("✅ Medicine updated successfully!");
-      setEditingId(null);
+      setShowMedicineModal(false);
       loadData();
     } catch (err: any) {
       alert(err.response?.data?.message || "Failed to update medicine");
     }
   };
 
-  const handleDelete = async (id: string) => {
+  // 🗑 Delete medicine
+  const handleDeleteMedicine = async (id: string) => {
     if (!window.confirm("Are you sure you want to delete this medicine?")) return;
-
     try {
       await api.delete(`/medicines/${id}`);
       alert("❌ Medicine deleted successfully!");
@@ -147,187 +151,108 @@ export default function AdminDashboard() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="container">
-        <h2>Admin Dashboard</h2>
-        <p>Loading data...</p>
-      </div>
-    );
-  }
+  if (loading) return <p>Loading dashboard...</p>;
 
   return (
     <div className="container">
-      {/* HEADER */}
-      <header
-        className="header"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+      <header style={{ display: "flex", justifyContent: "space-between" }}>
         <h2>Admin Dashboard</h2>
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <button
-            onClick={() => navigate("/add-medicine")}
-            className="btn"
-            style={{ background: "#4CAF50", color: "white" }}
-          >
-            ➕ Add Medicine
-          </button>
-          <button
-            onClick={() => navigate("/medicines")}
-            className="btn"
-            style={{ background: "#007BFF", color: "white" }}
-          >
-            💊 View Medicines
-          </button>
-          <button
-            className="btn btn-logout"
-            onClick={() => logout(navigate)}
-            style={{ background: "#dc3545", color: "#fff" }}
-          >
-            Logout
-          </button>
+        <h3>Welcome, {localStorage.getItem("userName")}</h3>
+        <div className="p-5 flex gap-4">
+          <button onClick={() => navigate("/add-medicine")} className="btn">➕ Add Medicine</button>
+          <button onClick={() => logout(navigate)} className="btn btn-logout">Logout</button>
         </div>
       </header>
 
-      {/* ERROR */}
-      {error && (
-        <p style={{ color: "red", marginTop: "10px" }}>
-          ⚠️ {error}
-        </p>
-      )}
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
-      {/* 👥 USERS TABLE */}
-      <section style={{ marginTop: "20px" }}>
+      {/* USERS TABLE */}
+      <section>
         <h3>👥 Users</h3>
-        {users.length === 0 ? (
-          <p>No users found.</p>
-        ) : (
-          <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "10px" }}>
-            <thead>
-              <tr style={{ borderBottom: "2px solid #ddd", textAlign: "left" }}>
-                <th style={{ padding: "10px" }}>Name</th>
-                <th style={{ padding: "10px" }}>Email</th>
-                <th style={{ padding: "10px" }}>Role</th>
-                <th style={{ padding: "10px" }}>Actions</th>
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <thead>
+            <tr style={{ borderBottom: "2px solid #ddd", textAlign: "left" }}>
+              <th style={{ padding: "10px" }}>Name</th>
+              <th style={{ padding: "10px" }}>Email</th>
+              <th style={{ padding: "10px" }}>Role</th>
+              <th style={{ padding: "10px" }}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((u) => (
+              <tr key={u._id} style={{ borderBottom: "1px solid #eee" }}>
+                <td style={{ padding: "10px" }}>{u.name}</td>
+                <td style={{ padding: "10px" }}>{u.email}</td>
+                <td style={{ padding: "10px" }}>{u.role}</td>
+                <td style={{ padding: "10px" }}>
+                  <button onClick={() => openUserModal(u)}
+                    className="btn"
+                    style={{ background: "#ffc107", color: "#000" }}>✏ Edit</button>
+                  <button onClick={() => handleDeleteUser(u._id)}
+                    className="btn"
+                    style={{ background: "#dc3545", color: "white", marginLeft: "5px" }}>🗑 Delete</button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {users.map((u) => (
-                <tr key={u._id} style={{ borderBottom: "1px solid #eee" }}>
-                  <td style={{ padding: "10px" }}>{u.name}</td>
-                  <td style={{ padding: "10px" }}>{u.email}</td>
-                  <td style={{ padding: "10px" }}>{u.role}</td>
-                  <td style={{ padding: "10px" }}>
-                    <button
-                      onClick={() => openUserModal(u)}
-                      className="btn"
-                      style={{ background: "#ffc107", color: "#000" }}
-                    >
-                      ✏ Edit
-                    </button>
-                    <button
-                      onClick={() => handleDeleteUser(u._id)}
-                      className="btn"
-                      style={{ background: "#dc3545", color: "white", marginLeft: "5px" }}
-                    >
-                      🗑 Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+            ))}
+          </tbody>
+        </table>
       </section>
 
-      {/* 💊 MEDICINES TABLE */}
+      {/* MEDICINES TABLE */}
       <section style={{ marginTop: "40px" }}>
         <h3>💊 Medicines</h3>
-        {medicines.length === 0 ? (
-          <p>No medicines available.</p>
-        ) : (
-          <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "10px" }}>
-            <thead>
-              <tr style={{ borderBottom: "2px solid #ddd", textAlign: "left" }}>
-                <th style={{ padding: "10px" }}>Name</th>
-                <th style={{ padding: "10px" }}>Category</th>
-                <th style={{ padding: "10px" }}>Description</th>
-                <th style={{ padding: "10px" }}>Price (KES)</th>
-                <th style={{ padding: "10px" }}>Image</th>
-                <th style={{ padding: "10px" }}>Stock</th>
-                <th style={{ padding: "10px" }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {medicines.map((m) => (
-                <tr key={m._id} style={{ borderBottom: "1px solid #eee" }}>
-                  {editingId === m._id ? (
-                    <>
-                      <td><input name="name" value={editForm.name || ""} onChange={handleEditChange} /></td>
-                      <td><input name="category" value={editForm.category || ""} onChange={handleEditChange} /></td>
-                      <td><input name="description" value={editForm.description || ""} onChange={handleEditChange} /></td>
-                      <td><input name="price" type="number" value={editForm.price || ""} onChange={handleEditChange} /></td>
-                      <td><input type="file" accept="image/*" value={editForm.image || "No Image"} onChange={handleEditChange} /></td>
-                      <td><input name="stock" type="number" value={editForm.stock || ""} onChange={handleEditChange} /></td>
-                      <td>
-                        <button onClick={() => saveEdit(m._id)} className="btn" style={{ background: "#28a745", color: "white" }}>
-                          💾 Save
-                        </button>
-                        <button onClick={() => setEditingId(null)} className="btn" style={{ background: "#6c757d", color: "white", marginLeft: "5px" }}>
-                          ✖ Cancel
-                        </button>
-                      </td>
-                    </>
+        <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "10px" }}>
+          <thead>
+            <tr style={{ borderBottom: "2px solid #ddd", textAlign: "left" }}>
+              <th style={{ padding: "10px" }}>Name</th>
+              <th style={{ padding: "10px" }}>Category</th>
+              <th style={{ padding: "10px" }}>Price</th>
+              <th style={{ padding: "10px" }}>Image</th>
+              <th style={{ padding: "10px" }}>Stock</th>
+              <th style={{ padding: "10px" }}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {medicines.map((m) => (
+              <tr key={m._id}>
+                <td style={{ padding: "10px" }}>{m.name}</td>
+                <td style={{ padding: "10px" }}>{m.category || "-"}</td>
+                <td style={{ padding: "10px" }}>{m.price}</td>
+                <td style={{ padding: "10px" }}>
+                  {m.image ? (
+                    <img
+                      src={`${"http://localhost:5000"}${m.image}`}
+                      alt={m.name}
+                      style={{
+                        width: "60px",
+                        height: "60px",
+                        objectFit: "cover",
+                        borderRadius: "6px",
+                      }}
+                    />
                   ) : (
-                    <>
-                      <td style={{ padding: "10px" }}>{m.name}</td>
-                      <td style={{ padding: "10px" }}>{m.category || "-"}</td>
-                      <td style={{ padding: "10px" }}>{m.description || "-"}</td>
-                      <td style={{ padding: "10px" }}>{m.price}</td>
-                      <td style={{ padding: "10px" }}>
-                        {m.image ? (
-                          <img
-                            src={`${(import.meta as any).env.VITE_API_BASE}${m.image}`}
-                            alt={m.name}
-                            style={{
-                              width: "60px",
-                              height: "60px",
-                              objectFit: "cover",
-                              borderRadius: "6px",
-                            }}
-                          />
-                        ) : (
-                          "No Image"
-                        )}
-                      </td>
-                      <td style={{ padding: "10px" }}>{m.stock}</td>
-
-                      <td style={{ padding: "10px" }}>{m.stock}</td>
-                      <td style={{ padding: "10px" }}>
-                        <button onClick={() => handleEdit(m)} className="btn" style={{ background: "#ffc107", color: "#000" }}>
-                          ✏ Edit
-                        </button>
-                        <button onClick={() => handleDelete(m._id)} className="btn" style={{ background: "#dc3545", color: "white", marginLeft: "5px" }}>
-                          🗑 Delete
-                        </button>
-                      </td>
-                    </>
+                    "No Image"
                   )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+                </td>
+                <td style={{ padding: "10px" }}>{m.stock}</td>
+                <td style={{ padding: "10px" }}>
+                  <button onClick={() => openMedicineModal(m)}
+                    className="btn"
+                    style={{ background: "#ffc107", color: "#000" }}>✏ Edit</button>
+                  <button onClick={() => handleDeleteMedicine(m._id)}
+                    className="btn"
+                    style={{ background: "#dc3545", color: "white", marginLeft: "5px" }}>🗑 Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </section>
 
-      {/* 🪟 EDIT USER MODAL */}
+      {/* USER MODAL */}
       {showUserModal && selectedUser && (
-        <div
-          style={{
+        <div className="modal-backdrop"
+        style={{
             position: "fixed",
             top: 0,
             left: 0,
@@ -338,56 +263,94 @@ export default function AdminDashboard() {
             justifyContent: "center",
             alignItems: "center",
             zIndex: 1000,
-          }}
-        >
-          <div
-            style={{
+          }}>
+          <div className="modal"
+          style={{
               background: "#fff",
               padding: "20px",
               borderRadius: "8px",
               width: "400px",
               boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
-            }}
-          >
+            }}>
             <h3>Edit User</h3>
-            <label>Name:</label>
-            <input
-              name="name"
-              value={editUserData.name || ""}
-              onChange={handleUserChange}
-              style={{ width: "100%", marginBottom: "10px" }}
-            />
-            <label>Email:</label>
-            <input
-              name="email"
-              value={editUserData.email || ""}
-              onChange={handleUserChange}
-              style={{ width: "100%", marginBottom: "10px" }}
-            />
-            <label>Role:</label>
-            <select
-              name="role"
-              value={editUserData.role || ""}
-              onChange={handleUserChange}
-              style={{ width: "100%", marginBottom: "15px" }}
-            >
+            <label>Name</label>
+            <input name="name" value={editUserData.name || ""} onChange={handleUserChange} 
+            style={{ width: "100%", marginBottom: "10px" }}/>
+            <label>Email</label>
+            <input name="email" value={editUserData.email || ""} onChange={handleUserChange} 
+            style={{ width: "100%", marginBottom: "10px" }}/>
+            <label>Password (optional)</label>
+            <input name="password" type="password" value={editUserData.password || ""} onChange={handleUserChange} 
+            style={{ width: "100%", marginBottom: "10px" }}/>
+            <label>Role</label>
+            <select name="role" value={editUserData.role || ""} onChange={handleUserChange}
+            style={{ width: "100%", marginBottom: "15px" }}>
               <option value="user">User</option>
               <option value="pharmacist">Pharmacist</option>
               <option value="admin">Admin</option>
             </select>
-            <div style={{ textAlign: "right" }}>
-              <button
-                onClick={() => setShowUserModal(false)}
-                style={{ marginRight: "10px" }}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={saveUserChanges}
-                style={{ background: "#28a745", color: "#fff" }}
-              >
-                Save Changes
-              </button>
+            <div style={{ textAlign: "right", marginTop: "10px" }}>
+              <button onClick={() => setShowUserModal(false)}
+                className="btn"
+                style={{ marginRight: "10px" }}>Cancel</button>
+              <button onClick={saveUserChanges}
+                className="btn"
+                style={{ background: "#28a745", color: "#fff" }}>Save</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MEDICINE MODAL */}
+      {showMedicineModal && selectedMedicine && (
+        <div className="modal-backdrop"
+        style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(0,0,0,0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
+          }}>
+          <div className="modal"
+            style={{
+                background: "#fff",
+                padding: "20px",
+                borderRadius: "8px",
+                width: "400px",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+              }}>
+            <h3>Edit Medicine</h3>
+            <label>Name</label>
+            <input name="name" value={editMedicineData.name || ""} onChange={handleMedicineChange} 
+            style={{ width: "100%", marginBottom: "10px" }}/>
+            <label>Category</label>
+            <input name="category" value={editMedicineData.category || ""} onChange={handleMedicineChange} 
+            style={{ width: "100%", marginBottom: "10px" }}/>
+            <label>Description</label>
+            <input name="description" value={editMedicineData.description || ""} onChange={handleMedicineChange}
+            style={{ width: "100%", marginBottom: "10px" }} />
+            <label>Price</label>
+            <input name="price" type="number" value={editMedicineData.price || ""} onChange={handleMedicineChange} 
+            style={{ width: "100%", marginBottom: "10px" }}/>
+            <label>Stock</label>
+            <input name="stock" type="number" value={editMedicineData.stock || ""} onChange={handleMedicineChange} 
+            style={{ width: "100%", marginBottom: "10px" }}/>
+            <label>Image</label>
+            <input type="file" accept="image/*" onChange={(e) => setEditMedicineImage(e.target.files?.[0] || null)} 
+            style={{ width: "100%", marginBottom: "10px" }}/>
+
+            <div style={{ textAlign: "right", marginTop: "10px" }}>
+              <button onClick={() => setShowMedicineModal(false)}
+                className="btn"
+                style={{ marginRight: "10px" }}>Cancel</button>
+              <button onClick={saveMedicineChanges}
+                className="btn"
+                style={{ background: "#28a745", color: "#fff" }}>Save</button>
             </div>
           </div>
         </div>
