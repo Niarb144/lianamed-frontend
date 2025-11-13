@@ -12,6 +12,7 @@ import MedicineList from './pages/MedicineList'
 import Cart from './pages/Cart'
 import MyPrescriptions from './pages/MyPrescriptions'
 import UploadPrescription from './pages/UploadPrescription'
+import AllPrescriptions from './pages/AllPrescriptions'
 
 export default function App(){
   return (
@@ -29,6 +30,7 @@ export default function App(){
         <Route path="/cart" element={<Cart />} />
         <Route path="/prescriptions" element={<MyPrescriptions />} />
         <Route path="addPrescription" element={<UploadPrescription />} />
+        <Route path='/allPrescriptions' element={<AllPrescriptions />} />
 
 
       </Routes>

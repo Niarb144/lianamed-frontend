@@ -55,7 +55,7 @@ export default function Products() {
           marginBottom: "20px",
         }}
       >
-        <h2>LianaMed</h2>
+        
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <input
             type="text"
@@ -70,16 +70,6 @@ export default function Products() {
             }}
           />
           <CartIcon />
-
-          <h3>Welcome, {localStorage.getItem("userName")}</h3>
-
-          {/* <button
-            className="btn btn-logout"
-            onClick={() => logout(navigate)}
-            style={{ background: "#dc3545", color: "#fff" }}
-          >
-            Logout
-          </button> */}
         </div>
       </header>
 

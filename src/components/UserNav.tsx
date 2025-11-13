@@ -30,7 +30,7 @@ import { logout } from "../utils/logout";
 
 const products = [
   { name: 'Upload Prescription', description: 'Get a better understanding of your traffic', href: '/addPrescription', icon: FaFileMedical },
-  { name: 'View Prescriptions', descrIption: 'Speak directly to your customers', href: '#', icon: FaList },
+  { name: 'View Prescriptions', descrIption: 'Speak directly to your customers', href: '/prescriptions', icon: FaList },
   { name: 'Edit User', description: 'Your customers’ data will be safe and secure', href: '#', icon: RiUserSettingsLine },
   
 ]

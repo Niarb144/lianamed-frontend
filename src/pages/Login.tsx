@@ -34,7 +34,7 @@ export default function Login() {
           navigate('/admin-dashboard');
           break;
         case 'pharmacist':
-          navigate('/doctor-dashboard');
+          navigate('/allPrescriptions');
           break;
         case 'nurse':
           navigate('/nurse-dashboard');
