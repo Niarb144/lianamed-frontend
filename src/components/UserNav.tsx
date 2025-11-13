@@ -22,23 +22,27 @@ import {
   SquaresPlusIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
+import { FaUserCircle } from "react-icons/fa";
+import { FaFileMedical, FaList } from "react-icons/fa6";
+import { RiUserSettingsLine } from "react-icons/ri";
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+import { logout } from "../utils/logout";
 
 const products = [
-  { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
-  { name: 'Engagement', description: 'Speak directly to your customers', href: '#', icon: CursorArrowRaysIcon },
-  { name: 'Security', description: 'Your customers’ data will be safe and secure', href: '#', icon: FingerPrintIcon },
-  { name: 'Integrations', description: 'Connect with third-party tools', href: '#', icon: SquaresPlusIcon },
-  { name: 'Automations', description: 'Build strategic funnels that will convert', href: '#', icon: ArrowPathIcon },
+  { name: 'Upload Prescription', description: 'Get a better understanding of your traffic', href: '/addPrescription', icon: FaFileMedical },
+  { name: 'View Prescriptions', descrIption: 'Speak directly to your customers', href: '#', icon: FaList },
+  { name: 'Edit User', description: 'Your customers’ data will be safe and secure', href: '#', icon: RiUserSettingsLine },
+  
 ]
 const callsToAction = [
   { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
   { name: 'Contact sales', href: '#', icon: PhoneIcon },
 ]
 
-export default function Navigation() {
+export default function UserNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
+  const navigate = useNavigate();
+  const userId = localStorage.getItem("userId");
 
   return (
     <header className="bg-white">
@@ -64,15 +68,28 @@ export default function Navigation() {
           </button>
         </div>
         <PopoverGroup className="hidden lg:flex lg:gap-x-12">
-          {/* <Popover className="relative">
-            <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900">
-              Product
+
+          <a href="/prescriptions" className="text-sm/6 font-semibold text-gray-900">
+            Prescription
+          </a>
+          <a href="/about" className="text-sm/6 font-semibold text-gray-900">
+            About
+          </a>
+          <a href="/contact" className="text-sm/6 font-semibold text-gray-900">
+            Contacts
+          </a>
+        </PopoverGroup>
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end mr-4 gap-4">
+
+          <Popover className="relative">
+            <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 cursor-pointer">
+              <FaUserCircle /> {localStorage.getItem("userName")}
               <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-gray-400" />
             </PopoverButton>
 
             <PopoverPanel
               transition
-              className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg outline-1 outline-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
+              className="absolute left-1/2 z-10 mt-3 w-sm max-w-md -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg outline-1 outline-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
             >
               <div className="p-4">
                 {products.map((item) => (
@@ -88,43 +105,18 @@ export default function Navigation() {
                         {item.name}
                         <span className="absolute inset-0" />
                       </a>
-                      <p className="mt-1 text-gray-600">{item.description}</p>
+                      
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
-                {callsToAction.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="flex items-center justify-center gap-x-2.5 p-3 text-sm/6 font-semibold text-gray-900 hover:bg-gray-100"
-                  >
-                    <item.icon aria-hidden="true" className="size-5 flex-none text-gray-400" />
-                    {item.name}
-                  </a>
-                ))}
-              </div>
             </PopoverPanel>
-          </Popover> */}
+          </Popover>
 
-          <a href="/products" className="text-sm/6 font-semibold text-gray-900">
-            Products
-          </a>
-          <a href="/about" className="text-sm/6 font-semibold text-gray-900">
-            About
-          </a>
-          <a href="/contact" className="text-sm/6 font-semibold text-gray-900">
-            Contacts
-          </a>
-        </PopoverGroup>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-4">
-          <a href="/login" className="text-sm/6 font-semibold text-gray-900">
-            Log in <span aria-hidden="true">&rarr;</span>
-          </a>
-
-          <a href="/register"className='text-sm/6 font-semibold text-gray-900'>
-            Register <span aria-hidden="true">&rarr;</span>
+          <a 
+          onClick={() => logout(navigate)}
+          className="text-sm/6 font-semibold text-gray-900 cursor-pointer">
+            Log Out <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
       </nav>
@@ -191,10 +183,11 @@ export default function Navigation() {
               </div>
               <div className="py-6">
                 <a
+                  onClick={() => logout(navigate)}
                   href="/login"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                 >
-                  Log in
+                  Log Out
                 </a>
               </div>
             </div>

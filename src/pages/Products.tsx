@@ -5,6 +5,7 @@ import CartIcon from "../components/CartIcon";
 import { useCart } from "../context/CartContext";
 import { logout } from "../utils/logout";
 import { useNavigate } from "react-router-dom";
+import UserNav from "../components/UserNav";
 
 interface Medicine {
   _id: string;
@@ -42,6 +43,9 @@ export default function Products() {
   );
 
   return (
+    <main>
+    <UserNav />
+
     <div className="container" style={{ padding: "20px" }}>
       <header
         style={{
@@ -51,7 +55,7 @@ export default function Products() {
           marginBottom: "20px",
         }}
       >
-        <h2>💊 Medicine Store</h2>
+        <h2>LianaMed</h2>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <input
             type="text"
@@ -69,13 +73,13 @@ export default function Products() {
 
           <h3>Welcome, {localStorage.getItem("userName")}</h3>
 
-          <button
+          {/* <button
             className="btn btn-logout"
             onClick={() => logout(navigate)}
             style={{ background: "#dc3545", color: "#fff" }}
           >
             Logout
-          </button>
+          </button> */}
         </div>
       </header>
 
@@ -177,5 +181,6 @@ export default function Products() {
         onClose={() => setSelected(null)}
       />
     </div>
+    </main>
   );
 }
