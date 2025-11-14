@@ -7,12 +7,14 @@ import Footer from '../components/Footer'
 
 const UserPage = () => {
   return (
-    <div className='overflow-hidden'>
-        <UserNav />
-        <AllPrescriptions />
-        <AllOrders />
-        <Footer />   
-    </div>
+    <main>
+      <UserNav />
+      <a href='/home'> Buy Product</a>
+      <AllPrescriptions />
+      <AllOrders />
+      <Footer /> 
+    </main>
+    
   )
 }
 
