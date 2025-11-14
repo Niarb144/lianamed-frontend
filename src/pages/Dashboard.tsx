@@ -7,7 +7,7 @@ export default function Dashboard(){
   useEffect(()=>{
     const token = localStorage.getItem('token')
     if(token) setAuthToken(token)
-    api.get('/users/me').then(res=>{
+    api.get('/users/me').then(res=>{ 
       setMe(res.data.user)
     }).catch(err=>{
       console.error(err)

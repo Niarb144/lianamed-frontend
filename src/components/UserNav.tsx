@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import CartIcon from "../components/CartIcon";
 import {
   Dialog,
   DialogPanel,
@@ -48,7 +49,7 @@ export default function UserNav() {
     <header className="bg-white">
       <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
         <div className="flex lg:flex-1">
-          <a href="/" className="-m-1.5 p-1.5">
+          <a href="/home" className="-m-1.5 p-1.5">
             
             <img
               alt="Lianamed"
@@ -72,15 +73,19 @@ export default function UserNav() {
           <a href="/prescriptions" className="text-sm/6 font-semibold text-gray-900">
             Prescription
           </a>
-          <a href="/about" className="text-sm/6 font-semibold text-gray-900">
-            About
+          <a href="/my-orders" className="text-sm/6 font-semibold text-gray-900">
+            Orders
           </a>
           <a href="/contact" className="text-sm/6 font-semibold text-gray-900">
             Contacts
           </a>
+
+          
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end mr-4 gap-4">
 
+            <CartIcon />
+          
           <Popover className="relative">
             <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 cursor-pointer">
               <FaUserCircle /> {localStorage.getItem("userName")}

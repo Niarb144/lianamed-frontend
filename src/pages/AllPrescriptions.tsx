@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { api, setAuthToken } from "../api/api";
 import { useNavigate } from "react-router-dom";
-import UserNav from "../components/UserNav";
+
 
 interface Prescription {
   _id: string;
@@ -43,7 +43,6 @@ export default function AllPrescriptions() {
 
   return (
     <main>
-        <UserNav />
     <div style={{ padding: "20px" }}>
       <h2>All User Prescriptions</h2>
       <table style={{ width: "100%", borderCollapse: "collapse" }}>

@@ -5,6 +5,7 @@ import Products from './pages/Products'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
+import UserPage from './pages/UserPage'
 import AdminDashboard from './pages/AdminDashboard'
 import PharmacistDashboard from './pages/PharmacistDashboard'
 import AddMedicine from './pages/AddMedicine'
@@ -13,6 +14,9 @@ import Cart from './pages/Cart'
 import MyPrescriptions from './pages/MyPrescriptions'
 import UploadPrescription from './pages/UploadPrescription'
 import AllPrescriptions from './pages/AllPrescriptions'
+import MyOrders from './pages/MyOrders'
+import AllOrders from './pages/AllOrders'
+
 
 export default function App(){
   return (
@@ -20,6 +24,7 @@ export default function App(){
       <Routes>
         <Route path='/' element={<HomePage/>} />
         <Route path='/login' element={<Login/>} />
+        <Route path='/home' element={<UserPage />}/>
         <Route path='/products' element={<Products/>} />
         <Route path='/register' element={<Register/>} />
         <Route path='/dashboard' element={<Dashboard/>} />
@@ -31,6 +36,9 @@ export default function App(){
         <Route path="/prescriptions" element={<MyPrescriptions />} />
         <Route path="addPrescription" element={<UploadPrescription />} />
         <Route path='/allPrescriptions' element={<AllPrescriptions />} />
+        <Route path="/my-orders" element={<MyOrders />} />
+        <Route path="/all-orders" element={<AllOrders />} />
+
 
 
       </Routes>

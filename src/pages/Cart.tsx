@@ -2,6 +2,8 @@ import React from "react";
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api/api"; 
+import UserNav from "../components/UserNav";
+import Footer from "../components/Footer";
 
 
 export default function Cart() {
@@ -36,7 +38,7 @@ export default function Cart() {
     alert("✅ Order placed successfully!");
     console.log(res.data);
     clearCart();
-    navigate("/products");
+    navigate("/home");
   } catch (err: any) {
     console.error("❌ Checkout error:", err.response?.data || err);
     alert(err.response?.data?.message || "Failed to checkout.");
@@ -45,6 +47,8 @@ export default function Cart() {
 
 
   return (
+    <main>
+      <UserNav />
     <div
       className="container"
       style={{
@@ -53,6 +57,7 @@ export default function Cart() {
         margin: "0 auto",
       }}
     >
+      
       <header
         style={{
           display: "flex",
@@ -63,7 +68,7 @@ export default function Cart() {
       >
         <h2>🛒 Your Cart</h2>
         <button
-          onClick={() => navigate("/products")}
+          onClick={() => navigate("/home")}
           style={{
             background: "#007BFF",
             color: "white",
@@ -243,5 +248,7 @@ export default function Cart() {
         </>
       )}
     </div>
+    <Footer />
+    </main>
   );
 }

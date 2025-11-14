@@ -34,16 +34,16 @@ export default function Login() {
           navigate('/admin-dashboard');
           break;
         case 'pharmacist':
-          navigate('/allPrescriptions');
+          navigate('/pharmacist-dashboard');
           break;
         case 'nurse':
           navigate('/nurse-dashboard');
           break;
         case 'patient':
-          navigate('/products');
+          navigate('/home');
           break;
         default:
-          navigate('/products'); // fallback route
+          navigate('/'); // fallback route
       }
     } catch (err: any) {
       console.error(err);

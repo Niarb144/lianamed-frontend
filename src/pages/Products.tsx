@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../api/api";
 import ProductModal from "../components/ProductModal";
-import CartIcon from "../components/CartIcon";
 import { useCart } from "../context/CartContext";
-import { logout } from "../utils/logout";
 import { useNavigate } from "react-router-dom";
-import UserNav from "../components/UserNav";
+
 
 interface Medicine {
   _id: string;
@@ -44,7 +42,6 @@ export default function Products() {
 
   return (
     <main>
-    <UserNav />
 
     <div className="container" style={{ padding: "20px" }}>
       <header
@@ -69,7 +66,6 @@ export default function Products() {
               width: "250px",
             }}
           />
-          <CartIcon />
         </div>
       </header>
 
