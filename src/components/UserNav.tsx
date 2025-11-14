@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import CartIcon from "../components/CartIcon";
+import NotificationBell from '../components/NotificationBell';
 import {
   Dialog,
   DialogPanel,
@@ -83,7 +84,7 @@ export default function UserNav() {
           
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end mr-4 gap-4">
-
+            <NotificationBell />
             <CartIcon />
           
           <Popover className="relative">

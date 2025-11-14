@@ -49,15 +49,18 @@ export default function AllPrescriptions() {
   }, [navigate]);
 
   // 🟢 Approve / Reject handler
-  const updateStatus = async (id: string, status: string) => {
-    try {
-      await api.put(`/prescriptions/status/${id}`, { status });
-      loadAll(); // refresh UI
-    } catch (err: any) {
-      console.error(err);
-      alert("Failed to update status.");
-    }
-  };
+  const updateStatus = async (id: string, status: "approved" | "rejected") => {
+  try {
+    await api.put(`/prescriptions/status/${id}`, { status });
+    alert("Status updated!");
+
+    setPrescriptions((prev) =>
+      prev.map((p) => (p._id === id ? { ...p, status } : p))
+    );
+  } catch {
+    alert("Failed to update.");
+  }
+};
 
   // 🎨 Badge styling
   const badgeStyle = (status: string) => {
@@ -104,23 +107,23 @@ export default function AllPrescriptions() {
 
                 {/* Status badge */}
                 <td>
-                  <span style={badgeStyle(p.status)}>{p.status}</span>
+                  <strong>{p.status}</strong>
                 </td>
 
                 {/* Approve / Reject buttons */}
                 <td>
                   <button
                     onClick={() => updateStatus(p._id, "approved")}
-                    style={{ background: "green", color: "white", marginRight: "5px" }}
                     disabled={p.status === "approved"}
+                    style={{ background: "green", color: "white", marginRight: "5px" }}
                   >
                     Approve
                   </button>
 
                   <button
                     onClick={() => updateStatus(p._id, "rejected")}
-                    style={{ background: "red", color: "white" }}
                     disabled={p.status === "rejected"}
+                    style={{ background: "red", color: "white" }}
                   >
                     Reject
                   </button>

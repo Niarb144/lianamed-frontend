@@ -16,6 +16,7 @@ import UploadPrescription from './pages/UploadPrescription'
 import AllPrescriptions from './pages/AllPrescriptions'
 import MyOrders from './pages/MyOrders'
 import AllOrders from './pages/AllOrders'
+import MyNotifications from './pages/MyNotifications'
 
 
 export default function App(){
@@ -38,8 +39,7 @@ export default function App(){
         <Route path='/allPrescriptions' element={<AllPrescriptions />} />
         <Route path="/my-orders" element={<MyOrders />} />
         <Route path="/all-orders" element={<AllOrders />} />
-
-
+        <Route path="/notifications" element={<MyNotifications />} />
 
       </Routes>
 
