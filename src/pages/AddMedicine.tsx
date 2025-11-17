@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { api, setAuthToken } from "../api/api";
 import { useNavigate } from "react-router-dom";
+import AdminNav from "../components/AdminNav";
+import Footer from "../components/Footer";
 
 export default function AddMedicine() {
   const [form, setForm] = useState({
@@ -48,62 +50,108 @@ export default function AddMedicine() {
   };
 
   return (
-    <div className="container">
-      <h2>Add New Medicine</h2>
-      <form onSubmit={handleSubmit} style={{ maxWidth: 500 }}>
-        <input
-          name="name"
-          placeholder="Name"
-          value={form.name}
-          onChange={handleChange}
-          required
-          className="input"
-        />
-        <input
-          name="category"
-          placeholder="Category"
-          value={form.category}
-          onChange={handleChange}
-          className="input"
-        />
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={form.description}
-          onChange={handleChange}
-          className="input"
-        />
-        <input
-          name="price"
-          placeholder="Price"
-          type="number"
-          value={form.price}
-          onChange={handleChange}
-          required
-          className="input"
-        />
-        <input
-          name="stock"
-          placeholder="Stock"
-          type="number"
-          value={form.stock}
-          onChange={handleChange}
-          className="input"
-        />
-        <label>Image</label>
-        <input type="file" accept="image/*" onChange={handleImageChange} />
-
-        {image && (
-          <div style={{ marginTop: "10px" }}>
-            <img
-              src={URL.createObjectURL(image)}
-              alt="preview"
-              style={{ width: "120px", borderRadius: "6px" }}
+    <main>
+      
+      <div className="max-w-xl mx-auto bg-white shadow-lg rounded-2xl p-8 mt-4 border border-gray-100">
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Name */}
+          <div>
+            <label className="block text-sm text-gray-700 mb-1">Medicine Name</label>
+            <input
+              name="name"
+              placeholder="Enter medicine name"
+              value={form.name}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
             />
           </div>
-        )}
-        <button type="submit" className="btn">Add Medicine</button>
-      </form>
-    </div>
+
+          {/* Category */}
+          <div>
+            <label className="block text-sm text-gray-700 mb-1">Category</label>
+            <input
+              name="category"
+              placeholder="e.g Painkiller"
+              value={form.category}
+              onChange={handleChange}
+              className="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+            />
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="block text-sm text-gray-700 mb-1">Description</label>
+            <textarea
+              name="description"
+              placeholder="Short description about the medicine"
+              value={form.description}
+              onChange={handleChange}
+              rows={3}
+              className="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+            />
+          </div>
+
+          {/* Price & Stock */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm text-gray-700 mb-1">Price (KES)</label>
+              <input
+                name="price"
+                type="number"
+                placeholder="0.00"
+                value={form.price}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm text-gray-700 mb-1">Stock</label>
+              <input
+                name="stock"
+                type="number"
+                placeholder="0"
+                value={form.stock}
+                onChange={handleChange}
+                className="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+              />
+            </div>
+          </div>
+
+          {/* Image Upload */}
+          <div>
+            <label className="block text-sm text-gray-700 mb-1">Medicine Image</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full cursor-pointer bg-gray-100 px-4 py-2 rounded-lg border border-gray-300"
+            />
+
+            {image && (
+              <div className="mt-3">
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt="preview"
+                  className="w-32 h-32 object-cover rounded-lg shadow-md"
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Submit */}
+          <button
+            type="submit"
+            className="w-full py-3 mt-4 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-all"
+          >
+            Add Medicine
+          </button>
+        </form>
+      </div>
+
+
+    </main>
   );
 }

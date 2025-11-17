@@ -26,7 +26,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { FaUserCircle } from "react-icons/fa";
 import { FaFileMedical, FaList } from "react-icons/fa6";
-import { RiUserSettingsLine } from "react-icons/ri";
+import { RiUserSettingsLine, RiNotification4Line } from "react-icons/ri";
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
 import { logout } from "../utils/logout";
 

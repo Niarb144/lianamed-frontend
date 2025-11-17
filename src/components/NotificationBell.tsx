@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/api";
 import { Link } from "react-router-dom";
+import { RiUserSettingsLine, RiNotification4Line } from "react-icons/ri";
 
 export default function NavBar() {
   const [count, setCount] = useState(0);
@@ -17,9 +18,9 @@ export default function NavBar() {
   }, []);
 
   return (
-    <nav style={{ padding: 20 }}>
+    <nav>
       <Link to="/notifications" style={{ position: "relative" }}>
-        🔔
+        <RiNotification4Line size={24} />
         {count > 0 && (
           <span
             style={{

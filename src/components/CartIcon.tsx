@@ -1,6 +1,7 @@
 import React from "react";
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
+import { CiShoppingCart } from "react-icons/ci";
 
 export default function CartIcon() {
   const { cart } = useCart();
@@ -12,7 +13,9 @@ export default function CartIcon() {
       style={{ position: "relative", cursor: "pointer" }}
       onClick={() => navigate("/cart")}
     >
-      <span style={{ fontSize: "24px" }}>🛒</span>
+      <span style={{ fontSize: "24px" }}>
+        <CiShoppingCart />
+      </span>
       {count > 0 && (
         <span
           style={{

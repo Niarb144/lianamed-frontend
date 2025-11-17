@@ -38,7 +38,7 @@ export default function Cart() {
     alert("✅ Order placed successfully!");
     console.log(res.data);
     clearCart();
-    navigate("/home");
+    navigate("/my-orders");
   } catch (err: any) {
     console.error("❌ Checkout error:", err.response?.data || err);
     alert(err.response?.data?.message || "Failed to checkout.");
@@ -124,7 +124,7 @@ export default function Cart() {
                     <img
                       src={
                         item.image
-                          ? `${"http://locahlost:5000/api"}${item.image}`
+                          ? `${"http://locahlost:5000"}${item.image}`
                           : "https://via.placeholder.com/50x50?text=No+Image"
                       }
                       alt={item.name}
@@ -224,7 +224,7 @@ export default function Cart() {
                 cursor: "pointer",
               }}
             >
-              🧹 Clear Cart
+              Clear Cart
             </button>
 
             <div>
@@ -241,7 +241,7 @@ export default function Cart() {
                   marginTop: "10px",
                 }}
               >
-                ✅ Checkout
+                Checkout
               </button>
             </div>
           </div>

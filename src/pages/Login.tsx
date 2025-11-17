@@ -95,22 +95,24 @@ export default function Login() {
             className="w-full px-4 py-3 rounded-md bg-white/20 text-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
           />
 
-          <div>
+          <div className="relative w-full">
             <input
               placeholder="Password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-md bg-white/20 text-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+              className="w-full px-4 py-3 pr-12 rounded-md bg-white/20 text-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
             />
+
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-3 text-gray-300 hover:text-white transition"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 hover:text-white transition"
             >
               {showPassword ? <EyeOffIcon size={20} /> : <EyeIcon size={20} />}
             </button>
           </div>
+
           
 
           <motion.button

@@ -42,6 +42,11 @@ body{
   border:1px solid #ddd;
   width:320px;
 }
+.input-floating:focus ~ label,
+.input-floating:not(:placeholder-shown) ~ label {
+  @apply -top-2 text-xs text-blue-600 bg-white px-1;
+}
+
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(240px,1fr));

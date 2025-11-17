@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { api, setAuthToken } from "../api/api";
 import { useNavigate } from "react-router-dom";
+import UserNav from "../components/UserNav";
+import Footer from "../components/Footer";
 
 interface Order {
   _id: string;
@@ -32,6 +34,8 @@ export default function MyOrders() {
   }, [navigate]);
 
   return (
+    <main>
+      <UserNav />
     <div style={{ padding: "20px", maxWidth: "700px", margin: "0 auto" }}>
       <h2>🧾 My Orders</h2>
       {orders.length === 0 ? (
@@ -60,5 +64,7 @@ export default function MyOrders() {
         ))
       )}
     </div>
+    <Footer />
+    </main>
   );
 }

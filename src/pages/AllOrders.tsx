@@ -18,8 +18,8 @@ export default function AllOrders() {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
 
-    if (!token || role !== "pharmacist") {
-      alert("Only pharmacists can view all orders.");
+    if (!token || (role !== "pharmacist" && role !== "admin")) {
+      alert("Only authorized staff can view all orders.");
       navigate("/login");
       return;
     }
