@@ -425,6 +425,166 @@ export default function AdminDashboard() {
               <AllPrescriptions />
             </section>
           )}
+
+          {/* ================= USER EDIT MODAL ================= */}
+          {showUserModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                <h2 className="text-xl font-semibold mb-4">✏ Edit User</h2>
+
+                <div className="space-y-3">
+                  {/* Name */}
+                  <input
+                    type="text"
+                    name="name"
+                    value={editUserData.name}
+                    onChange={handleUserChange}
+                    className="w-full border p-2 rounded"
+                    placeholder="Name"
+                  />
+
+                  {/* Email */}
+                  <input
+                    type="email"
+                    name="email"
+                    value={editUserData.email}
+                    onChange={handleUserChange}
+                    className="w-full border p-2 rounded"
+                    placeholder="Email"
+                  />
+
+                  {/* Role */}
+                  <select
+                    name="role"
+                    value={editUserData.role}
+                    onChange={handleUserChange}
+                    className="w-full border p-2 rounded"
+                  >
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                    <option value="pharmacist">Pharmacist</option>
+                  </select>
+
+                  {/* Password */}
+                  <input
+                    type="password"
+                    name="password"
+                    value={editUserData.password || ""}
+                    onChange={handleUserChange}
+                    className="w-full border p-2 rounded"
+                    placeholder="New Password (optional)"
+                  />
+                </div>
+
+                {/* Buttons */}
+                <div className="flex justify-end mt-5 space-x-3">
+                  <button
+                    onClick={() => setShowUserModal(false)}
+                    className="px-4 py-2 bg-gray-300 rounded"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={saveUserChanges}
+                    className="px-4 py-2 bg-blue-600 text-white rounded"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ================= MEDICINE EDIT MODAL ================= */}
+          {showMedicineModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+                <h2 className="text-xl font-semibold mb-4">✏ Edit Medicine</h2>
+
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Name */}
+                  <input
+                    type="text"
+                    name="name"
+                    value={editMedicineData.name}
+                    onChange={handleMedicineChange}
+                    className="border p-2 rounded"
+                    placeholder="Name"
+                  />
+
+                  {/* Category */}
+                  <input
+                    type="text"
+                    name="category"
+                    value={editMedicineData.category || ""}
+                    onChange={handleMedicineChange}
+                    className="border p-2 rounded"
+                    placeholder="Category"
+                  />
+
+                  {/* Price */}
+                  <input
+                    type="number"
+                    name="price"
+                    value={editMedicineData.price}
+                    onChange={handleMedicineChange}
+                    className="border p-2 rounded"
+                    placeholder="Price"
+                  />
+
+                  {/* Stock */}
+                  <input
+                    type="number"
+                    name="stock"
+                    value={editMedicineData.stock}
+                    onChange={handleMedicineChange}
+                    className="border p-2 rounded"
+                    placeholder="Stock"
+                  />
+                </div>
+
+                {/* Image Upload */}
+                <div className="mt-4">
+                  <label className="block font-medium mb-1">Image</label>
+
+                  {/* Preview existing image */}
+                  {selectedMedicine?.image && (
+                    <img
+                      src={`http://localhost:5000${selectedMedicine.image}`}
+                      className="w-20 h-20 object-cover rounded mb-3"
+                      alt="medicine"
+                    />
+                  )}
+
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setEditMedicineImage(e.target.files?.[0] || null)}
+                    className="border p-2 rounded w-full"
+                  />
+                </div>
+
+                {/* Buttons */}
+                <div className="flex justify-end mt-5 space-x-3">
+                  <button
+                    onClick={() => setShowMedicineModal(false)}
+                    className="px-4 py-2 bg-gray-300 rounded"
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    onClick={saveMedicineChanges}
+                    className="px-4 py-2 bg-green-600 text-white rounded"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+
         </div>
         </div>
 

@@ -94,6 +94,10 @@ export default function PharmacistDashboard() {
     }
   };
 
+  const handleMedicineChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setEditMedicineData({ ...editMedicineData, [e.target.name]: e.target.value });
+    };
+
 
   // ✏ Open medicine edit modal
   const openMedicineModal = (medicine: Medicine) => {
@@ -339,6 +343,95 @@ export default function PharmacistDashboard() {
             <section>
               <AllPrescriptions />
             </section>
+          )}
+
+          {/* ================= MEDICINE EDIT MODAL ================= */}
+          {showMedicineModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+                <h2 className="text-xl font-semibold mb-4">✏ Edit Medicine</h2>
+
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Name */}
+                  <input
+                    type="text"
+                    name="name"
+                    value={editMedicineData.name}
+                    onChange={handleMedicineChange}
+                    className="border p-2 rounded"
+                    placeholder="Name"
+                  />
+
+                  {/* Category */}
+                  <input
+                    type="text"
+                    name="category"
+                    value={editMedicineData.category || ""}
+                    onChange={handleMedicineChange}
+                    className="border p-2 rounded"
+                    placeholder="Category"
+                  />
+
+                  {/* Price */}
+                  <input
+                    type="number"
+                    name="price"
+                    value={editMedicineData.price}
+                    onChange={handleMedicineChange}
+                    className="border p-2 rounded"
+                    placeholder="Price"
+                  />
+
+                  {/* Stock */}
+                  <input
+                    type="number"
+                    name="stock"
+                    value={editMedicineData.stock}
+                    onChange={handleMedicineChange}
+                    className="border p-2 rounded"
+                    placeholder="Stock"
+                  />
+                </div>
+
+                {/* Image Upload */}
+                <div className="mt-4">
+                  <label className="block font-medium mb-1">Image</label>
+
+                  {/* Preview existing image */}
+                  {selectedMedicine?.image && (
+                    <img
+                      src={`http://localhost:5000${selectedMedicine.image}`}
+                      className="w-20 h-20 object-cover rounded mb-3"
+                      alt="medicine"
+                    />
+                  )}
+
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setEditMedicineImage(e.target.files?.[0] || null)}
+                    className="border p-2 rounded w-full"
+                  />
+                </div>
+
+                {/* Buttons */}
+                <div className="flex justify-end mt-5 space-x-3">
+                  <button
+                    onClick={() => setShowMedicineModal(false)}
+                    className="px-4 py-2 bg-gray-300 rounded"
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    onClick={saveMedicineChanges}
+                    className="px-4 py-2 bg-green-600 text-white rounded"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
           )}
         </div>
         </div>
