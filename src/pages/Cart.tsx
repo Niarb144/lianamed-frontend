@@ -34,11 +34,9 @@ export default function Cart() {
 
     console.log("🧾 Checkout payload:", orderData);
 
-    const res = await api.post("/billing/checkout", orderData);
-    alert("✅ Order placed successfully!");
-    console.log(res.data);
-    clearCart();
-    navigate("/my-orders");
+    // When user clicks "Checkout"
+    navigate("/checkout");
+
   } catch (err: any) {
     console.error("❌ Checkout error:", err.response?.data || err);
     alert(err.response?.data?.message || "Failed to checkout.");

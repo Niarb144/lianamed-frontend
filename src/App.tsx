@@ -18,6 +18,8 @@ import MyOrders from './pages/MyOrders'
 import AllOrders from './pages/AllOrders'
 import MyNotifications from './pages/MyNotifications'
 import ProductDetails from './pages/ProductDetails'
+import Checkout from './pages/Checkout'
+import PaymentPage from './pages/Payment'
 
 
 export default function App(){
@@ -42,6 +44,8 @@ export default function App(){
         <Route path="/all-orders" element={<AllOrders />} />
         <Route path="/notifications" element={<MyNotifications />} />
         <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/payment/:orderId" element={<PaymentPage />} />
 
       </Routes>
 

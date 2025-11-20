@@ -16,7 +16,7 @@ interface Order {
 export default function MyOrders() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
+  const [statusFilter, setStatusFilter] = useState("Pending");
   const navigate = useNavigate();
 
   useEffect(() => {
