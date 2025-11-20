@@ -17,6 +17,7 @@ import AllPrescriptions from './pages/AllPrescriptions'
 import MyOrders from './pages/MyOrders'
 import AllOrders from './pages/AllOrders'
 import MyNotifications from './pages/MyNotifications'
+import ProductDetails from './pages/ProductDetails'
 
 
 export default function App(){
@@ -40,6 +41,7 @@ export default function App(){
         <Route path="/my-orders" element={<MyOrders />} />
         <Route path="/all-orders" element={<AllOrders />} />
         <Route path="/notifications" element={<MyNotifications />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
 
       </Routes>
 

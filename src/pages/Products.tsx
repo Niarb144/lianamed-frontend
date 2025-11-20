@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../api/api";
-import ProductModal from "../components/ProductModal";
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
-
 
 interface Medicine {
   _id: string;
   name: string;
-  category?: string;
-  description?: string;
   price: number;
   stock: number;
   image?: string;
@@ -18,17 +14,14 @@ interface Medicine {
 export default function Products() {
   const [medicines, setMedicines] = useState<Medicine[]>([]);
   const [search, setSearch] = useState("");
-  const [selected, setSelected] = useState<Medicine | null>(null);
   const { addToCart } = useCart();
   const navigate = useNavigate();
-  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await api.get("/medicines");
         setMedicines(res.data);
-        console.log("Fetched medicines:", res.data);
       } catch (err) {
         console.error("Error fetching medicines:", err);
       }
@@ -40,133 +33,78 @@ export default function Products() {
     m.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  const openDetails = (id: string) => navigate(`/product/${id}`);
+
   return (
-    <main>
+    <main className="px-6 py-10 max-w-7xl mx-auto">
 
-    <div className="container" style={{ padding: "20px" }}>
-      <header
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "20px",
-        }}
-      >
-        
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <input
-            type="text"
-            placeholder="🔍 Search..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            style={{
-              padding: "8px 12px",
-              borderRadius: "6px",
-              border: "1px solid #ccc",
-              width: "250px",
-            }}
-          />
-        </div>
-      </header>
+      {/* Search Bar */}
+      <div className="flex justify-between items-center mb-8">
+        <input
+          type="text"
+          placeholder="🔍 Search medicines..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="border w-80 px-4 py-2 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 outline-none"
+        />
+      </div>
 
+      {/* Products Grid */}
       {filtered.length === 0 ? (
         <p>No medicines available.</p>
       ) : (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-            gap: "20px",
-          }}
-        >
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {filtered.map((m) => (
-            console.log(m.image),
             <div
               key={m._id}
-              style={{
-                border: "1px solid #ddd",
-                borderRadius: "10px",
-                padding: "12px",
-                background: "#fff",
-                boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-              }}
+              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border"
             >
+              {/* Clickable image */}
               <div
-                style={{
-                  width: "100%",
-                  height: "180px",
-                  overflow: "hidden",
-                  borderRadius: "8px",
-                  marginBottom: "10px",
-                }}
+                className="cursor-pointer"
+                onClick={() => openDetails(m._id)}
               >
                 <img
                   src={
                     m.image
-                      ? `${"http://localhost:5000"}${m.image}`
-                      : "https://placehold.co/800?text=Hello+World&font=roboto"
+                      ? `http://localhost:5000${m.image}`
+                      : "https://placehold.co/600x400?text=No+Image"
                   }
                   alt={m.name}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                  }}
+                  className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
                 />
               </div>
-              <h3>{m.name}</h3>
-              <p>
-                <strong>KES {m.price}</strong>
-              </p>
-              <div style={{ display: "flex", gap: "10px" }}>
-                <button
-                  onClick={() => addToCart(m)}
-                  style={{
-                    flex: 1,
-                    background: "#007BFF",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "5px",
-                    padding: "8px",
-                    cursor: "pointer",
-                  }}
-                >
-                  🛒 Add
-                </button>
-                <button
-                  onClick={() => setSelected(m)}
-                  style={{
-                    flex: 1,
-                    background: "#28a745",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "5px",
-                    padding: "8px",
-                    cursor: "pointer",
-                  }}
-                >
-                  👁 View
-                </button>
+
+              <div className="p-4">
+                <h3 className="text-lg font-semibold text-gray-800 text-center">
+                  {m.name}
+                </h3>
+
+                <p className="text-blue-600 font-bold text-xl text-center mt-1">
+                  KES {m.price}
+                </p>
+
+                <div className="flex gap-3 mt-4">
+                  <button
+                    onClick={() => addToCart(m)}
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-xl transition-all"
+                  >
+                    🛒 Add
+                  </button>
+
+                  <button
+                    onClick={() => openDetails(m._id)}
+                    className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 rounded-xl transition-all"
+                  >
+                    👁 View
+                  </button>
+                </div>
               </div>
             </div>
           ))}
         </div>
       )}
-      <ProductModal
-        product={
-          selected
-            ? {
-                _id: selected._id,
-                name: selected.name,
-                price: selected.price,
-                image: selected.image,
-                quantity: 1,
-              }
-            : null
-        }
-        onClose={() => setSelected(null)}
-      />
-    </div>
+
     </main>
   );
 }

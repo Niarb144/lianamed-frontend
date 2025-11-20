@@ -8,6 +8,7 @@ import Footer from "../components/Footer";
 import AddMedicine from "./AddMedicine";
 import AllOrders from "./AllOrders";
 import AllPrescriptions from "./AllPrescriptions";
+import Products from "./Products";
 
 interface User {
   _id: string;
@@ -194,6 +195,17 @@ export default function PharmacistDashboard() {
 
             <li>
               <button
+                onClick={() => setActiveSection("shop")}
+                className={`w-full text-left px-4 py-2 rounded cursor-pointer ${
+                  activeSection === "shop" ? "bg-blue-500 text-white" : "hover:bg-gray-200"
+                }`}
+              >
+                Shop
+              </button>
+            </li>
+
+            <li>
+              <button
                 onClick={() => setActiveSection("orders")}
                 className={`w-full text-left px-4 py-2 rounded cursor-pointer ${
                   activeSection === "orders" ? "bg-blue-500 text-white" : "hover:bg-gray-200"
@@ -328,6 +340,13 @@ export default function PharmacistDashboard() {
           {activeSection === "addMedicine" && (
             <section>
               <AddMedicine />
+            </section>
+          )}
+
+          {/* SHOP SECTION */}
+          {activeSection === "shop" && (
+            <section>
+              <Products />
             </section>
           )}
 
