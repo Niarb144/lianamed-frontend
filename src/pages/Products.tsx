@@ -9,6 +9,7 @@ interface Medicine {
   price: number;
   stock: number;
   image?: string;
+  category: string;
 }
 
 export default function Products() {
@@ -16,6 +17,11 @@ export default function Products() {
   const [search, setSearch] = useState("");
   const { addToCart } = useCart();
   const navigate = useNavigate();
+  const [sortType, setSortType] = useState("none");
+  const [category, setCategory] = useState("all");
+
+  const categories = ["all", ...new Set(medicines.map(m => m.category))];
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,9 +35,24 @@ export default function Products() {
     fetchData();
   }, []);
 
-  const filtered = medicines.filter((m) =>
-    m.name.toLowerCase().includes(search.toLowerCase())
+  let filtered = medicines.filter((m) =>
+  m.name.toLowerCase().includes(search.toLowerCase())
   );
+
+  if (category !== "all") {
+    filtered = filtered.filter((m) => m.category === category);
+  }
+
+  if (sortType === "price-asc") {
+    filtered = [...filtered].sort((a, b) => a.price - b.price);
+  } else if (sortType === "price-desc") {
+    filtered = [...filtered].sort((a, b) => b.price - a.price);
+  } else if (sortType === "az") {
+    filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name));
+  } else if (sortType === "za") {
+    filtered = [...filtered].sort((a, b) => b.name.localeCompare(a.name));
+  }
+
 
   const openDetails = (id: string) => navigate(`/product/${id}`);
 
@@ -48,6 +69,51 @@ export default function Products() {
           className="border w-80 px-4 py-2 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 outline-none"
         />
       </div>
+
+      {/* Filters */}
+      <div className="flex flex-wrap gap-4 mb-6">
+
+        {/* Category Filter */}
+        <select
+          className="border px-4 py-2 rounded-xl"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          {categories.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat === "all" ? "All Categories" : cat}
+            </option>
+          ))}
+        </select>
+
+        {/* Sort Filter */}
+        <select
+          className="border px-4 py-2 rounded-xl"
+          value={sortType}
+          onChange={(e) => setSortType(e.target.value)}
+        >
+          <option value="none">Sort By</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="az">Name: A → Z</option>
+          <option value="za">Name: Z → A</option>
+        </select>
+
+      </div>
+
+      {/* Category Cards */}
+      {/* <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-10">
+        {categories.map((cat) => (
+          <div
+            key={cat}
+            onClick={() => setCategory(cat)}
+            className={`cursor-pointer p-5 rounded-xl shadow-sm border text-center font-semibold transition-all duration-200 
+              ${category === cat ? "bg-blue-600 text-white shadow-md" : "bg-white hover:shadow-lg"}`}
+          >
+            {cat}
+          </div>
+        ))}
+      </div> */}
 
       {/* Products Grid */}
       {filtered.length === 0 ? (
