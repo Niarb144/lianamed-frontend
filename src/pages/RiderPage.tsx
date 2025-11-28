@@ -91,7 +91,7 @@ export default function Rider() {
           className="w-64 bg-white shadow-lg p-5 border-r border-gray-200"
           style={{ minHeight: "100vh" }}
         >
-          <h2 className="text-xl font-bold mb-6">Pharmacist Panel</h2>
+          <h2 className="text-xl font-bold mb-6">Rider Panel</h2>
 
           <ul className="space-y-3">
             <li>
