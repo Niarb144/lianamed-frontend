@@ -16,6 +16,7 @@ interface Prescription {
 
 export default function AllPrescriptions() {
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
   // 🟦 Load prescriptions
@@ -74,10 +75,27 @@ export default function AllPrescriptions() {
     }
   };
 
+  const filteredPrescriptions = prescriptions.filter((prescription) => {
+  const term = search.toLowerCase();
+  return (
+    prescription._id.toLowerCase().includes(term) ||
+    prescription.user?.name?.toLowerCase().includes(term) ||
+    prescription.user?.email?.toLowerCase().includes(term) ||
+    prescription.status.toLowerCase().includes(term)
+  );
+});
+
   return (
     <main>
       <div style={{ padding: "20px" }}>
         <h2>All User Prescriptions</h2>
+        <input
+        type="text"
+        placeholder="Search orders by name, email, medicine, ID or status..."
+        className="w-full md:w-1/2 p-3 mb-8 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
 
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
@@ -92,7 +110,7 @@ export default function AllPrescriptions() {
           </thead>
 
           <tbody>
-            {prescriptions.map((p) => (
+            {filteredPrescriptions.map((p) => (
               <tr key={p._id}>
                 <td>{p.user?.name}</td>
                 <td>{p.user?.email}</td>

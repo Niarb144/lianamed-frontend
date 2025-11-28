@@ -463,6 +463,7 @@ export default function AdminDashboard() {
                     <option value="user">User</option>
                     <option value="admin">Admin</option>
                     <option value="pharmacist">Pharmacist</option>
+                    <option value="rider">Courier</option>
                   </select>
 
                   {/* Password */}

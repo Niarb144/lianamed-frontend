@@ -101,20 +101,6 @@ export default function Products() {
 
       </div>
 
-      {/* Category Cards */}
-      {/* <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-10">
-        {categories.map((cat) => (
-          <div
-            key={cat}
-            onClick={() => setCategory(cat)}
-            className={`cursor-pointer p-5 rounded-xl shadow-sm border text-center font-semibold transition-all duration-200 
-              ${category === cat ? "bg-blue-600 text-white shadow-md" : "bg-white hover:shadow-lg"}`}
-          >
-            {cat}
-          </div>
-        ))}
-      </div> */}
-
       {/* Products Grid */}
       {filtered.length === 0 ? (
         <p>No medicines available.</p>

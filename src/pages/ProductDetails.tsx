@@ -3,6 +3,7 @@ import { api } from "../api/api";
 import { useParams } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import UserNav from "../components/UserNav";
+import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 
 export default function ProductDetails() {
@@ -20,7 +21,7 @@ export default function ProductDetails() {
 
   if (!product) return (
     <div>
-        <UserNav />
+        <Navigation />
         <p className="p-10">Looking for the product ...</p>
         <Footer />
     </div>

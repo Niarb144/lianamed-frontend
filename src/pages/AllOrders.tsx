@@ -16,13 +16,15 @@ export default function AllOrders() {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [newStatus, setNewStatus] = useState<string>("");
   const [modalOpen, setModalOpen] = useState(false);
+  const [search, setSearch] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
 
-    if (!token || (role !== "pharmacist" && role !== "admin")) {
+    if (!token || (role !== "pharmacist" && role !== "admin" && role !=="rider")) {
       alert("Only authorized staff can view all orders.");
       navigate("/login");
       return;
@@ -69,15 +71,36 @@ export default function AllOrders() {
     }
   };
 
+  const filteredOrders = orders.filter((order) => {
+  const term = search.toLowerCase();
+
+  return (
+    order._id.toLowerCase().includes(term) ||
+    order.customer?.name?.toLowerCase().includes(term) ||
+    order.customer?.email?.toLowerCase().includes(term) ||
+    order.status.toLowerCase().includes(term) ||
+    order.medicines.some((m) => m.med.name.toLowerCase().includes(term))
+  );
+});
+
+
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <h2 className="text-3xl font-bold mb-8 flex items-center gap-2">💊 All Orders</h2>
+      <input
+        type="text"
+        placeholder="Search orders by name, email, medicine, ID or status..."
+        className="w-full md:w-1/2 p-3 mb-8 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
 
       {orders.length === 0 ? (
         <p className="text-gray-500 text-center">No orders found.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {orders.map((order) => {
+          {filteredOrders.map((order) => {
             const statusColors: Record<string, string> = {
               Pending: "bg-yellow-100 text-yellow-700 border-yellow-300",
               Shipped: "bg-blue-100 text-blue-700 border-blue-300",

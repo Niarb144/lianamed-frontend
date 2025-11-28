@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 
-const API_BASE = 'http://192.168.0.152:5000/api';
-const VITE_FILE_BASE='http://192.168.0.152:5000';
+const API_BASE = 'http://localhost:5000/api';
+const VITE_FILE_BASE='http://localhost:5000';
 // const API_BASE = 'https://lianamed-backend.onrender.com/api';
 
 

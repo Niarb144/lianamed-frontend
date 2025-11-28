@@ -20,6 +20,7 @@ import MyNotifications from './pages/MyNotifications'
 import ProductDetails from './pages/ProductDetails'
 import Checkout from './pages/Checkout'
 import PaymentPage from './pages/Payment'
+import Rider from './pages/RiderPage'
 
 
 export default function App(){
@@ -46,6 +47,7 @@ export default function App(){
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/payment/:orderId" element={<PaymentPage />} />
+        <Route path="/rider" element={<Rider />} />
 
       </Routes>
 

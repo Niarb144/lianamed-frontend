@@ -42,6 +42,9 @@ export default function Login() {
         case 'patient':
           navigate('/home');
           break;
+        case 'rider':
+          navigate('/rider');
+          break;
         default:
           navigate('/'); // fallback route
       }
