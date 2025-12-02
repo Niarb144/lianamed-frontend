@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { api, setAuthToken } from "../api/api";
 import { useNavigate } from "react-router-dom";
+import { exportOrderToPDF, exportOrderToExcel } from "../utils/exportUtils";
+
 
 interface Order {
   _id: string;
@@ -89,7 +91,9 @@ export default function AllOrders() {
     order.customer?.name?.toLowerCase().includes(term) ||
     order.customer?.email?.toLowerCase().includes(term) ||
     order.status.toLowerCase().includes(term) ||
-    order.medicines.some((m) => m.med.name.toLowerCase().includes(term))
+    order.medicines.some((m) => m.med.name.toLowerCase().includes(term)) 
+    // order.paymentStatus.toLowerCase().includes(term) ||
+    // order.deliveryAddress.toLowerCase().includes(term)
   );
 });
 
@@ -231,42 +235,63 @@ export default function AllOrders() {
   )}
 
   {/* 📌 BILLING DETAILS MODAL */}
-  {billingModalOpen && selectedOrder && (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl shadow-lg p-6 w-[450px]">
-        <h3 className="text-xl font-bold mb-4">🧾 Billing Details</h3>
+{billingModalOpen && selectedOrder && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white rounded-xl shadow-lg p-6 w-[480px]">
 
-        <p><strong>Customer:</strong> {selectedOrder.customer.name}</p>
-        <p><strong>Email:</strong> {selectedOrder.customer.email}</p>
-        <p><strong>Billing Address:</strong> {selectedOrder.billingAddress}</p>
-        <p><strong>Payment Method:</strong> {selectedOrder.paymentMethod}</p>
-        <p><strong>Payment Status:</strong> {selectedOrder.paymentStatus}</p>
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-xl font-bold">🧾 Billing Details</h3>
 
-        <h4 className="font-semibold mt-4 mb-2">Medicines</h4>
-        <ul className="border border-gray-200 rounded-lg p-3 max-h-40 overflow-y-auto">
-          {selectedOrder.medicines.map((m, idx) => (
-            <li key={idx} className="flex justify-between py-1 text-sm">
-              <span>{m.med.name}</span>
-              <span>{m.qty} × KES {m.price}</span>
-            </li>
-          ))}
-        </ul>
-
-        <p className="mt-4 font-semibold">
-          Total: <span className="text-blue-600">KES {selectedOrder.totalAmount}</span>
-        </p>
-
-        <div className="flex justify-end mt-4">
+        {/* Export Buttons */}
+        <div className="flex gap-2">
           <button
-            onClick={() => setBillingModalOpen(false)}
-            className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
+            onClick={() => exportOrderToPDF(selectedOrder)}
+            className="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm"
           >
-            Close
+            PDF
+          </button>
+
+          <button
+            onClick={() => exportOrderToExcel(selectedOrder)}
+            className="px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm"
+          >
+            Excel
           </button>
         </div>
       </div>
+
+      <p><strong>Customer:</strong> {selectedOrder.customer.name}</p>
+      <p><strong>Email:</strong> {selectedOrder.customer.email}</p>
+      <p><strong>Billing Address:</strong> {selectedOrder.billingAddress}</p>
+      <p><strong>Payment Method:</strong> {selectedOrder.paymentMethod}</p>
+      <p><strong>Payment Status:</strong> {selectedOrder.paymentStatus}</p>
+
+      <h4 className="font-semibold mt-4 mb-2">Medicines</h4>
+      <ul className="border border-gray-200 rounded-lg p-3 max-h-40 overflow-y-auto">
+        {selectedOrder.medicines.map((m, idx) => (
+          <li key={idx} className="flex justify-between py-1 text-sm">
+            <span>{m.med.name}</span>
+            <span>{m.qty} × KES {m.price}</span>
+          </li>
+        ))}
+      </ul>
+
+      <p className="mt-4 font-semibold">
+        Total: <span className="text-blue-600">KES {selectedOrder.totalAmount}</span>
+      </p>
+
+      <div className="flex justify-end mt-4">
+        <button
+          onClick={() => setBillingModalOpen(false)}
+          className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 cursor-pointer"
+        >
+          Close
+        </button>
+      </div>
     </div>
-  )}
+  </div>
+)}
+
 </div>
 
   );
