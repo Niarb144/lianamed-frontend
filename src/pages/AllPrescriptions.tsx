@@ -86,54 +86,86 @@ export default function AllPrescriptions() {
 });
 
   return (
-    <main>
-      <div style={{ padding: "20px" }}>
-        <h2>All User Prescriptions</h2>
-        <input
-        type="text"
-        placeholder="Search orders by name, email, medicine, ID or status..."
-        className="w-full md:w-1/2 p-3 mb-8 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+    <main className="px-4 py-8 max-w-7xl mx-auto">
+  <div>
+    <h2 className="text-3xl font-bold mb-6">📄 All User Prescriptions</h2>
 
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
-          <thead>
-            <tr>
-              <th>User</th>
-              <th>Email</th>
-              <th>File</th>
-              <th>Notes</th>
-              <th>Status</th>
-              <th>Actions</th> {/* NEW COLUMN */}
-            </tr>
-          </thead>
+    {/* Search bar */}
+    <input
+      type="text"
+      placeholder="Search prescriptions..."
+      className="w-full md:w-1/2 p-3 mb-6 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-600"
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+    />
 
-          <tbody>
-            {filteredPrescriptions.map((p) => (
-              <tr key={p._id}>
-                <td>{p.user?.name}</td>
-                <td>{p.user?.email}</td>
+    {/* Table container */}
+    <div className="bg-white shadow-md rounded-xl overflow-hidden border border-gray-200">
+      <table className="w-full text-left">
+        <thead className="bg-gray-100 border-b border-gray-200">
+          <tr>
+            <th className="py-3 px-4 font-semibold text-gray-700">User</th>
+            <th className="py-3 px-4 font-semibold text-gray-700">Email</th>
+            <th className="py-3 px-4 font-semibold text-gray-700">File</th>
+            <th className="py-3 px-4 font-semibold text-gray-700">Notes</th>
+            <th className="py-3 px-4 font-semibold text-gray-700">Status</th>
+            <th className="py-3 px-4 font-semibold text-gray-700">Actions</th>
+          </tr>
+        </thead>
 
-                <td>
-                  <a href={`http://localhost:5000${p.file}`} target="_blank" rel="noreferrer">
-                    View
+        <tbody>
+          {filteredPrescriptions.map((p) => {
+            const statusColor =
+              p.status === "approved"
+                ? "bg-green-100 text-green-600 border border-green-300"
+                : p.status === "rejected"
+                ? "bg-red-100 text-red-600 border border-red-300"
+                : "bg-yellow-100 text-yellow-700 border border-yellow-300";
+
+            return (
+              <tr
+                key={p._id}
+                className="transition hover:bg-gray-50 border-b border-gray-100"
+              >
+                <td className="py-3 px-4">{p.user?.name}</td>
+                <td className="py-3 px-4">{p.user?.email}</td>
+
+                <td className="py-3 px-4">
+                  <a
+                    href={`http://localhost:5000${p.file}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-blue-600 font-medium hover:underline"
+                  >
+                    View File
                   </a>
                 </td>
 
-                <td>{p.notes || "No notes"}</td>
-
-                {/* Status badge */}
-                <td>
-                  <strong>{p.status}</strong>
+                <td className="py-3 px-4 text-gray-600">
+                  {p.notes || "No notes"}
                 </td>
 
-                {/* Approve / Reject buttons */}
-                <td>
+                {/* Status badge */}
+                <td className="py-3 px-4">
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColor}`}
+                  >
+                    {p.status}
+                  </span>
+                </td>
+
+                {/* Action buttons */}
+                <td className="py-3 px-4 flex gap-2">
                   <button
                     onClick={() => updateStatus(p._id, "approved")}
                     disabled={p.status === "approved"}
-                    style={{ background: "green", color: "white", marginRight: "5px" }}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium text-white transition 
+                      ${
+                        p.status === "approved"
+                          ? "bg-green-300 cursor-not-allowed"
+                          : "bg-green-600 hover:bg-green-700"
+                      }
+                    `}
                   >
                     Approve
                   </button>
@@ -141,17 +173,25 @@ export default function AllPrescriptions() {
                   <button
                     onClick={() => updateStatus(p._id, "rejected")}
                     disabled={p.status === "rejected"}
-                    style={{ background: "red", color: "white" }}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium text-white transition
+                      ${
+                        p.status === "rejected"
+                          ? "bg-red-300 cursor-not-allowed"
+                          : "bg-red-600 hover:bg-red-700"
+                      }
+                    `}
                   >
                     Reject
                   </button>
                 </td>
-
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </main>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
   );
 }
