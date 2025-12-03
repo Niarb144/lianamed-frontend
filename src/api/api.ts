@@ -1,13 +1,13 @@
 import axios from 'axios';
 
 
-const API_BASE = 'http://localhost:5000/api';
+// const API_BASE = 'http://localhost:5000/api';
 const VITE_FILE_BASE='http://localhost:5000';
-// const API_BASE = 'https://lianamed-backend.onrender.com/api';
+const ONLINE_API_BASE = 'https://lianamed-backend.onrender.com/api';
 
 
 export const api = axios.create({
-  baseURL: API_BASE,
+  baseURL: ONLINE_API_BASE,
   timeout: 10000,
 });
 

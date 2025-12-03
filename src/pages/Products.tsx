@@ -119,7 +119,7 @@ export default function Products() {
                 <img
                   src={
                     m.image
-                      ? `http://localhost:5000${m.image}`
+                      ? `https://lianamed-backend.onrender.com${m.image}`
                       : "https://placehold.co/600x400?text=No+Image"
                   }
                   alt={m.name}
