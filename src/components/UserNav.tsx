@@ -152,18 +152,31 @@ export default function UserNav() {
           </div>
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
+            <div className="p-4">
+                {products.map((item) => (
+                  <div
+                    key={item.name}
+                    className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50"
+                  >
+                    <div className="flex size-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                      <item.icon aria-hidden="true" className="size-6 text-gray-600 group-hover:text-indigo-600" />
+                    </div>
+                    <div className="flex-auto">
+                      <a href={item.href} className="block font-semibold text-gray-900">
+                        {item.name}
+                        <span className="absolute inset-0" />
+                      </a>
+                      
+                    </div>
+                  </div>
+                ))}
+              </div>
               <div className="space-y-2 py-6">
-                <a
-                  href="/prescriptions"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
-                >
-                  Prescriptions
-                </a>
                 <a
                   href="/my-orders"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                 >
-                  Order
+                  My Orders
                 </a>
                 <a
                   href="/contact"
@@ -172,7 +185,9 @@ export default function UserNav() {
                   Contact
                 </a>
               </div>
+              
               <div className="py-6">
+                
                 <a
                   onClick={() => logout(navigate)}
                   href="/login"
