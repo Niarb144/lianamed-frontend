@@ -8,6 +8,10 @@ export default defineConfig({
     tailwindcss(),
   ],
   server: {
-    port: 5173
+    port: 5173,
+    host: true, // allow external access
+    allowedHosts: [
+      ".ngrok-free.app" // wildcard for all ngrok domains
+    ]
   }
 })
