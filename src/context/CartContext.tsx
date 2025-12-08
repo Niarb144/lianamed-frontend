@@ -58,16 +58,21 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [cart, cartKey]);
 
   const addToCart = (item: Omit<CartItem, "quantity">) => {
-    setCart((prev) => {
-      const existing = prev.find((i) => i._id === item._id);
-      if (existing) {
-        return prev.map((i) =>
-          i._id === item._id ? { ...i, quantity: i.quantity + 1 } : i
-        );
-      }
-      return [...prev, { ...item, quantity: 1 }];
-    });
-  };
+  setCart((prev) => {
+    const existing = prev.find((i) => i._id === item._id);
+
+    if (existing) {
+      alert(`${item.name} quantity increased!`);
+      return prev.map((i) =>
+        i._id === item._id ? { ...i, quantity: i.quantity + 1 } : i
+      );
+    }
+
+    alert(`${item.name} added to cart!`);
+    return [...prev, { ...item, quantity: 1 }];
+  });
+};
+
 
   const removeFromCart = (id: string) => setCart((prev) => prev.filter((i) => i._id !== id));
   const clearCart = () => setCart([]);

@@ -31,13 +31,13 @@ export default function MyNotifications() {
   return (
     <main>
       <UserNav />
-    <div style={{ padding: "20px" }}>
+    <div style={{ padding: "20px"}}>
       <h2>Notifications</h2>
 
       {list.length === 0 ? (
         <p>No notifications.</p>
       ) : (
-        <ul style={{ listStyle: "none", padding: 0 }}>
+        <ul style={{ listStyle: "none", padding: 0, marginTop: "80px" }}>
           {list.map((n) => (
             <li
               key={n._id}

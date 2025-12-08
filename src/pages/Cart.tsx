@@ -46,49 +46,61 @@ export default function Cart() {
 
   return (
     <main>
-      <UserNav />
-    <div
-      className="container"
+  <UserNav />
+
+  <div
+    className="container"
+    style={{
+      padding: "20px",
+      maxWidth: "800px",
+      margin: "0 auto",
+    }}
+  >
+    <header
       style={{
-        padding: "20px",
-        maxWidth: "800px",
-        margin: "0 auto",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: "20px",
+        marginTop: "80px",
+        flexWrap: "wrap",
+        gap: "10px",
       }}
     >
-      
-      <header
+      <h2 style={{ fontSize: "1.5rem" }}>🛒 Your Cart</h2>
+      <button
+        onClick={() => navigate("/home")}
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "20px",
+          background: "#007BFF",
+          color: "white",
+          border: "none",
+          padding: "8px 12px",
+          borderRadius: "6px",
+          cursor: "pointer",
+          width: "100%",
+          maxWidth: "160px",
         }}
       >
-        <h2>🛒 Your Cart</h2>
-        <button
-          onClick={() => navigate("/home")}
+        ⬅ Back to Store
+      </button>
+    </header>
+
+    {cart.length === 0 ? (
+      <p>Your cart is empty. Start shopping!</p>
+    ) : (
+      <>
+        <div
           style={{
-            background: "#007BFF",
-            color: "white",
-            border: "none",
-            padding: "8px 12px",
-            borderRadius: "6px",
-            cursor: "pointer",
+            width: "100%",
+            overflowX: "auto",
           }}
         >
-          ⬅ Back to Store
-        </button>
-      </header>
-
-      {cart.length === 0 ? (
-        <p>Your cart is empty. Start shopping!</p>
-      ) : (
-        <>
           <table
             style={{
               width: "100%",
               borderCollapse: "collapse",
               marginBottom: "20px",
+              minWidth: "500px",
             }}
           >
             <thead>
@@ -100,45 +112,45 @@ export default function Cart() {
               >
                 <th style={{ padding: "10px" }}>Product</th>
                 <th style={{ padding: "10px" }}>Price</th>
-                <th style={{ padding: "10px" }}>Quantity</th>
+                <th style={{ padding: "10px" }}>Qty</th>
                 <th style={{ padding: "10px" }}>Subtotal</th>
                 <th style={{ padding: "10px" }}>Action</th>
               </tr>
             </thead>
+
             <tbody>
               {cart.map((item) => (
-                <tr
-                  key={item._id}
-                  style={{ borderBottom: "1px solid #eee" }}
-                >
+                <tr key={item._id} style={{ borderBottom: "1px solid #eee" }}>
                   <td
                     style={{
                       padding: "10px",
                       display: "flex",
                       alignItems: "center",
                       gap: "10px",
+                      flexWrap: "wrap",
                     }}
                   >
                     <img
                       src={
                         item.image
-                          ? `${"http://locahlost:5000"}${item.image}`
+                          ? `${"http://localhost:5000"}${item.image}`
                           : "https://via.placeholder.com/50x50?text=No+Image"
                       }
                       alt={item.name}
                       style={{
-                        width: "60px",
-                        height: "60px",
+                        width: "55px",
+                        height: "55px",
                         objectFit: "cover",
                         borderRadius: "6px",
                       }}
                     />
-                    {item.name}
+                    <span style={{ fontSize: "14px" }}>{item.name}</span>
                   </td>
 
-                  <td style={{ padding: "10px" }}>KES {item.price}</td>
+                  <td style={{ padding: "10px", fontSize: "14px" }}>
+                    KES {item.price}
+                  </td>
 
-                  {/* ✅ Quantity Controls */}
                   <td style={{ padding: "10px" }}>
                     <div
                       style={{
@@ -179,7 +191,7 @@ export default function Cart() {
                     </div>
                   </td>
 
-                  <td style={{ padding: "10px" }}>
+                  <td style={{ padding: "10px", fontSize: "14px" }}>
                     KES {item.price * item.quantity}
                   </td>
 
@@ -193,6 +205,7 @@ export default function Cart() {
                         borderRadius: "5px",
                         padding: "6px 10px",
                         cursor: "pointer",
+                        whiteSpace: "nowrap",
                       }}
                     >
                       🗑 Remove
@@ -202,51 +215,60 @@ export default function Cart() {
               ))}
             </tbody>
           </table>
+        </div>
 
-          <div
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: "20px",
+            flexWrap: "wrap",
+            gap: "20px",
+          }}
+        >
+          <button
+            onClick={clearCart}
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginTop: "20px",
+              background: "#6c757d",
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+              padding: "8px 12px",
+              cursor: "pointer",
+              width: "100%",
+              maxWidth: "150px",
             }}
           >
+            Clear Cart
+          </button>
+
+          <div style={{ textAlign: "right", width: "100%", maxWidth: "200px" }}>
+            <h3 style={{ fontSize: "1.2rem", marginBottom: "5px" }}>
+              Total: KES {total}
+            </h3>
             <button
-              onClick={clearCart}
+              onClick={handleCheckout}
               style={{
-                background: "#6c757d",
+                background: "#28a745",
                 color: "white",
                 border: "none",
                 borderRadius: "5px",
-                padding: "8px 12px",
+                padding: "10px",
                 cursor: "pointer",
+                width: "100%",
               }}
             >
-              Clear Cart
+              Checkout
             </button>
-
-            <div>
-              <h3>Total: KES {total}</h3>
-              <button
-                onClick={handleCheckout}
-                style={{
-                  background: "#28a745",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "5px",
-                  padding: "8px 12px",
-                  cursor: "pointer",
-                  marginTop: "10px",
-                }}
-              >
-                Checkout
-              </button>
-            </div>
           </div>
-        </>
-      )}
-    </div>
-    <Footer />
-    </main>
+        </div>
+      </>
+    )}
+  </div>
+
+  <Footer />
+</main>
+
   );
 }

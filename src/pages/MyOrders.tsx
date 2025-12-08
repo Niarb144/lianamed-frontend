@@ -78,7 +78,7 @@ export default function MyOrders() {
         {/* --------------------- */}
         {/* SEARCH BAR */}
         {/* --------------------- */}
-        <div className="flex mb-6">
+        <div className="flex mb-6 my-4">
           <input
             type="text"
             placeholder="🔍 Search by product name or date..."

@@ -51,6 +51,7 @@ export default function MyPrescriptions() {
             justifyContent: "space-between",
             alignItems: "center",
             marginBottom: "20px",
+            marginTop: "80px",
             }}
         >
             <h2>🩺 My Prescriptions</h2>

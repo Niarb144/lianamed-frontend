@@ -57,7 +57,7 @@ export default function Products() {
   const openDetails = (id: string) => navigate(`/product/${id}`);
 
   return (
-    <main className="px-6 py-10 max-w-7xl mx-auto">
+    <main className="px-6 py-10 max-w-7xl mx-auto my-15">
 
       {/* Search Bar */}
       <div className="flex justify-between items-center mb-8">
@@ -105,7 +105,7 @@ export default function Products() {
       {filtered.length === 0 ? (
         <p>No medicines available.</p>
       ) : (
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div className="grid xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:gap-8">
           {filtered.map((m) => (
             <div
               key={m._id}
