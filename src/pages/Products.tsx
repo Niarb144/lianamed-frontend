@@ -57,10 +57,9 @@ export default function Products() {
   const openDetails = (id: string) => navigate(`/product/${id}`);
 
   return (
-    <main className="px-6 py-10 max-w-7xl mx-auto my-8">
+    <main className="px-6 py-10 max-w-7xl mx-auto md:my-8">
 
-      <div className="mb-2 flex flex-col md:flex-row md:justify-between md:items-center">
-        <div className="md:w-50 mb-2 md:mb-0">
+        <div className="w-30 md:w-50 mb-0">
           <img src="/images/lianamed-logo.png" className="w-auto h-auto" alt="Lianamed" />
         </div>
         {/* Search Bar */}
@@ -104,7 +103,7 @@ export default function Products() {
         </select>
 
       </div>
-      </div>
+      
 
       {/* Products Grid */}
       {filtered.length === 0 ? (
