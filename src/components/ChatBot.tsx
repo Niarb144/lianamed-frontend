@@ -44,7 +44,7 @@ export default function ChatBot() {
       {open && (
         <div className="w-80 h-96 bg-white shadow-xl rounded-xl flex flex-col mt-3">
           <div className="bg-blue-600 text-white p-3 rounded-t-xl text-center">
-            Pharmacy Assistant
+            Lianamed Assistant
           </div>
 
           <div className="flex-1 p-3 overflow-y-auto space-y-2">

@@ -21,6 +21,8 @@ import ProductDetails from './pages/ProductDetails'
 import Checkout from './pages/Checkout'
 import PaymentPage from './pages/Payment'
 import Rider from './pages/RiderPage'
+import About from './pages/About'
+import Contact from './pages/Contact'
 
 
 export default function App(){
@@ -48,6 +50,8 @@ export default function App(){
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/payment/:orderId" element={<PaymentPage />} />
         <Route path="/rider" element={<Rider />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
 
       </Routes>
 
