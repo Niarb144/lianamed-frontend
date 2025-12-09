@@ -57,10 +57,14 @@ export default function Products() {
   const openDetails = (id: string) => navigate(`/product/${id}`);
 
   return (
-    <main className="px-6 py-10 max-w-7xl mx-auto my-15">
+    <main className="px-6 py-10 max-w-7xl mx-auto my-8">
 
-      {/* Search Bar */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="mb-2 flex flex-col md:flex-row md:justify-between md:items-center">
+        <div className="md:w-50 mb-2 md:mb-0">
+          <img src="/images/lianamed-logo.png" className="w-auto h-auto" alt="Lianamed" />
+        </div>
+        {/* Search Bar */}
+      <div className="flex justify-between items-center mb-4">
         <input
           type="text"
           placeholder="🔍 Search medicines..."
@@ -71,7 +75,7 @@ export default function Products() {
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap gap-4 mb-6">
+      <div className="flex flex-wrap gap-4 mb-4">
 
         {/* Category Filter */}
         <select
@@ -99,6 +103,7 @@ export default function Products() {
           <option value="za">Name: Z → A</option>
         </select>
 
+      </div>
       </div>
 
       {/* Products Grid */}

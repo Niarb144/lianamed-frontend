@@ -50,14 +50,13 @@ export default function UserNav() {
     <header className="bg-white fixed z-50 w-full shadow-md">
       <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
         <div className="flex lg:flex-1">
-          <a href="/home" className="-m-1.5 p-1.5">
             
             <img
+              onClick={() => navigate("/home")}
               alt="Lianamed"
               src="/images/lm-transparent.png"
               className="h-8 w-auto"
             />
-          </a>
         </div>
         <div className="flex lg:hidden">
           <button
